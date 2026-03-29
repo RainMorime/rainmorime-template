@@ -29,30 +29,9 @@ export default function AboutSection({
             CC BY-NC-SA 4.0
           </a> 2025-PRESENT © Your Name
         </div>
-        <div className={styles.aboutImageContainer}>
-          {/* Replace with your own image or QR code */}
-          <img
-            src="https://placehold.co/200x200/0d0d0d/b2f2bb?text=QR"
-            alt="Website QR Code"
-            className={styles.aboutImage}
-          />
-        </div>
+      
       </div>
-      <div className={styles.aboutNewImageWrapper}>
-        <div className={styles.aboutNewImageContainer}>
-          {/* Replace with your own decorative images */}
-          <img
-            src="https://placehold.co/400x600/0d0d0d/b2f2bb?text=Avatar"
-            alt="About decorative"
-            className={`${styles.aboutNewImageBase} ${styles.aboutNewImageNormal}`}
-          />
-          <img
-            src="https://placehold.co/400x600/0d0d0d/f2b2d8?text=Avatar+Alt"
-            alt="About decorative alt"
-            className={`${styles.aboutNewImageBase} ${styles.aboutNewImageInverted}`}
-          />
-        </div>
-      </div>
+      
     </div>
   );
 }

@@ -226,8 +226,6 @@ export default function MainLayout({ children }) {
             displayedEnvParams={displayedEnvParams}
             isInverted={isInverted}
             drawerOpen={drawerOpen}
-            envData={envData}
-            envDataVersion={envDataVersion}
             isStandalone={isStandalone}
           />
         </>
