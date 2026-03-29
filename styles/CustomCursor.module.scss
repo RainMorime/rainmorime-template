@@ -1,0 +1,108 @@
+$c: rgba(200, 200, 200, 0.85);
+$c-dim: rgba(200, 200, 200, 0.25);
+
+.cursorRoot {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2147483647;
+  overflow: hidden;
+
+  @media (max-width: 1023px) {
+    display: none;
+  }
+}
+
+.hLine {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 1px;
+  background: $c-dim;
+  will-change: transform;
+  transition: opacity 0.2s ease;
+
+  &.hidden { opacity: 0; }
+}
+
+.vLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: $c-dim;
+  will-change: transform;
+  transition: opacity 0.2s ease;
+
+  &.hidden { opacity: 0; }
+}
+
+.dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  will-change: transform, width, height;
+  transition: opacity 0.2s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 24px;
+    height: 2px;
+    transform: translate(-50%, -50%);
+    background: $c;
+    transition: opacity 0.2s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 2px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+    background: $c;
+    transition: opacity 0.2s ease;
+  }
+
+  &.hidden { opacity: 0; }
+
+  &.hovering {
+    background:
+      /* ■ TL */
+      linear-gradient(#{$c}, #{$c}) 0 0 #{'/'} 5px 5px no-repeat,
+      /* ■ TR */
+      linear-gradient(#{$c}, #{$c}) 100% 0 #{'/'} 5px 5px no-repeat,
+      /* ■ BL */
+      linear-gradient(#{$c}, #{$c}) 0 100% #{'/'} 5px 5px no-repeat,
+      /* ■ BR */
+      linear-gradient(#{$c}, #{$c}) 100% 100% #{'/'} 5px 5px no-repeat;
+
+    &::before,
+    &::after {
+      opacity: 0;
+    }
+  }
+}
+
+.label {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-hud);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $c;
+  opacity: 0;
+  pointer-events: none;
+}

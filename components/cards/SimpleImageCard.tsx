@@ -1,0 +1,17 @@
+import React from 'react';
+import styles from '../../styles/SimpleImageCard.module.scss';
+
+const SimpleImageCard = ({ title, imageUrl }) => {
+  const imageStyle = imageUrl ? { backgroundImage: `url(${imageUrl})` } : {};
+
+  return (
+    <div className={styles.cardContainer} data-cursor-no-magnetic>
+      <div className={styles.cardImage} style={imageStyle}>
+        {!imageUrl && <span className={styles.placeholderText}>No Image</span>}
+      </div>
+      <h4 className={styles.cardTitle}>{title}</h4>
+    </div>
+  );
+};
+
+export default SimpleImageCard; 

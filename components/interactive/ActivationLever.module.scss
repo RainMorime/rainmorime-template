@@ -1,0 +1,137 @@
+/* ActivationLever.module.scss */
+
+.leverContainer {
+  // 移除绝对定位，使其在父容器中正常排列
+  // position: absolute;
+  // top: 17.5%;
+  // right: 20%;
+  width: 45px;
+  height: 90px;
+  z-index: 11;
+  cursor: none;
+  // 移除倾斜，因为它现在是相对于未倾斜的左侧面板
+  // transform: skewX(-15deg);
+  // 移除倾斜原点
+  // transform-origin: top right;
+  // background-color: red !important; // --- 移除此调试代码 ---
+  // background-color: rgba(0, 255, 0, 0.1); // 可选的淡背景色
+
+  display: flex;
+  transition: filter 0.3s ease;
+  
+  // --- 新增: 动画初始状态和过渡效果 ---
+  opacity: 0; // 初始状态：透明
+  transform: translateY(10px); // 初始状态：轻微向下偏移
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out, filter 0.3s ease; // 添加 opacity 和 transform 的过渡效果
+}
+
+.leverContainer.disabled {
+  cursor: default;
+  filter: brightness(0.7); /* 禁用时略微变暗 */
+}
+
+.leverSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.base {
+  fill: none;
+  stroke: var(--ark-border, #888888); /* 使用 CSS 变量，备用值为灰色 */
+  stroke-width: 1.5;
+}
+
+.slotLine {
+  stroke: rgba(var(--ark-border-rgb, 136, 136, 136), 0.5); /* 插槽线条颜色变暗 */
+  stroke-width: 1;
+  stroke-dasharray: 2 2; /* 插槽使用虚线 */
+}
+
+/* 控制杆手柄元素的编组 */
+.leverSvg g {
+   transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* 拉动效果的缓动函数 */
+}
+
+.handleTop {
+  stroke: var(--ark-border, #888888);
+  stroke-width: 2.5; /* 加粗手柄顶部 */
+}
+
+.handleShaft {
+  stroke: var(--ark-border, #888888);
+  stroke-width: 2;
+}
+
+.indicatorLight {
+  stroke-width: 1;
+  transition: fill 0.3s ease, stroke 0.3s ease, filter 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.indicatorLight.off {
+  fill: none;
+  stroke: var(--ark-border, #888888);
+}
+
+.indicatorLight.on {
+  fill: var(--ark-highlight-green, #B2F2BB); /* 激活时为亮绿色/青色 */
+  stroke: var(--ark-highlight-green, #B2F2BB);
+  stroke-width: 0.5;
+  /* 可选: 添加细微的光晕效果 */
+  filter: drop-shadow(0 0 2px var(--ark-highlight-green, #B2F2BB));
+}
+
+/* --- 移除 .labelText 样式 (或注释掉) --- */
+/*
+.labelText {
+  fill: var(--ark-text-secondary, #aaaaaa);
+  font-family: 'Dosis', monospace;
+  font-size: 10px;
+  text-anchor: middle;
+  user-select: none;
+  dominant-baseline: middle;
+}
+*/
+
+/* --- 新增: 图标样式 --- */
+.leverIcon {
+  fill: none;
+  stroke: var(--ark-text-secondary, #aaaaaa);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+
+  .leverContainer.activeState & {
+    stroke: var(--ark-highlight-green, #B2F2BB); // 激活状态时改变颜色
+  }
+}
+
+/* --- 移除 .leverLine 样式 (或注释掉) --- */
+/*
+.leverLine {
+  stroke: var(--ark-primary);
+  stroke-width: 2;
+  transition: transform 0.3s ease-in-out;
+
+  &.vertical {
+    // 可选: 垂直线条的特定样式
+  }
+
+  &.horizontal {
+    // 可选: 水平线条的特定样式
+  }
+}
+*/
+
+.leverContainer.activeState {
+  // 可以添加特殊效果，例如轻微的发光边框
+  // filter: drop-shadow(0 0 1px var(--ark-highlight-green, #B2F2BB)); 
+}
+
+// --- 新增: 动画触发后的状态 ---
+.leverContainer.animated {
+  opacity: 1; // 完全不透明
+  transform: translateY(0); // 恢复到原始位置
+} 

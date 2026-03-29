@@ -1,0 +1,448 @@
+$line: rgba(200, 200, 200, 0.18);
+$line-sub: rgba(200, 200, 200, 0.12);
+$line-hover: rgba(200, 200, 200, 0.45);
+$indent: 20px;
+$connector-w: 14px;
+
+// ─── Container ──────────────────────────────────────────────
+
+.skillTree {
+  font-family: var(--font-hud);
+  font-size: var(--fs-body);
+  color: var(--ark-primary);
+  padding: 4px 0 4px 14px;
+  user-select: none;
+}
+
+// ─── Two-column body ────────────────────────────────────────
+
+.treeBody {
+  display: flex;
+  gap: clamp(16px, 2vw, 32px);
+  align-items: flex-start;
+}
+
+.treeLeft {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.treeRight {
+  flex-shrink: 0;
+  width: clamp(200px, 20vw, 280px);
+  position: sticky;
+  top: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+// ─── Branch (category) ─────────────────────────────────────
+
+.branch {
+  position: relative;
+  padding-left: $indent;
+  padding-bottom: 6px;
+  opacity: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid $line;
+  }
+
+  &.last {
+    padding-bottom: 0;
+
+    &::before {
+      bottom: auto;
+      height: 18px;
+    }
+  }
+}
+
+.branchHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 4px;
+  font-family: var(--font-hud);
+  font-size: var(--fs-base);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -$indent;
+    top: 50%;
+    width: $connector-w;
+    border-top: 1px solid $line;
+  }
+}
+
+.branchName {
+  color: var(--ark-primary);
+  white-space: nowrap;
+}
+
+.branchLine {
+  color: rgba(200, 200, 200, 0.08);
+  overflow: hidden;
+  white-space: nowrap;
+  flex: 1;
+  min-width: 16px;
+}
+
+.branchCount {
+  font-size: var(--fs-2xs);
+  color: var(--ark-primary);
+  opacity: 0.3;
+  flex-shrink: 0;
+}
+
+// ─── Leaf (skill node) ─────────────────────────────────────
+
+.leaf {
+  position: relative;
+  padding-left: $indent;
+  opacity: 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid $line-sub;
+    transition: border-color 0.2s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 16px;
+    width: $connector-w;
+    border-top: 1px solid $line-sub;
+    transition: border-color 0.2s ease;
+  }
+
+  &.last::before {
+    bottom: auto;
+    height: 17px;
+  }
+
+  &.hovered {
+    &::before {
+      border-left-color: $line-hover;
+    }
+    &::after {
+      border-top-color: $line-hover;
+    }
+  }
+}
+
+.leafRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+
+  .hovered & {
+    border-color: var(--ark-border);
+    background-color: rgba(200, 200, 200, 0.025);
+  }
+}
+
+.leafName {
+  min-width: 160px;
+  color: var(--ark-primary);
+  white-space: nowrap;
+  transition: color 0.2s ease;
+
+  .hovered & {
+    color: var(--ark-text);
+  }
+}
+
+// ─── Progress bar (CSS segments) ────────────────────────────
+
+.leafBar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.barSeg {
+  display: block;
+  width: 6px;
+  height: 10px;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.filled {
+  background-color: rgba(200, 200, 200, 0.45);
+
+  .hovered & {
+    background-color: var(--ark-primary);
+  }
+}
+
+.empty {
+  background-color: var(--ark-border);
+  opacity: 0.25;
+}
+
+.leafLvl {
+  font-family: var(--font-mono);
+  min-width: 14px;
+  text-align: right;
+  flex-shrink: 0;
+  opacity: 0.3;
+  font-size: 0.9em;
+}
+
+// ─── Terminal reveal / collapse animation ───────────────────
+
+@keyframes termReveal {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes termCollapse {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    opacity: 0;
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+.expanded {
+  .branch,
+  .leaf {
+    animation: termReveal 0.18s ease-out forwards;
+    animation-delay: calc(var(--delay, 0) * 45ms);
+  }
+}
+
+.collapsing {
+  .branch,
+  .leaf {
+    opacity: 1;
+    animation: termCollapse 0.12s ease-in forwards;
+    animation-delay: calc(var(--delay-rev, 0) * 25ms);
+  }
+}
+
+// ─── Right info panel ───────────────────────────────────────
+
+.infoPanel {
+  border: 1px solid var(--ark-border);
+  padding: 14px 16px;
+  font-family: var(--font-hud);
+  animation: panelIn 0.12s ease-out;
+}
+
+@keyframes panelIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.infoPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--ark-border);
+}
+
+.infoPanelTitle {
+  font-size: var(--fs-base);
+  color: var(--ark-primary);
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.infoPanelLevel {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--ark-primary);
+  opacity: 0.5;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.infoPanelBody {
+  font-family: var(--font-hud);
+  font-size: var(--fs-base);
+  color: var(--ark-primary);
+  opacity: 0.6;
+  line-height: 1.7;
+}
+
+.infoCursor {
+  color: var(--ark-primary);
+  animation: cursorBlink 0.8s step-end infinite;
+  opacity: 0.5;
+  font-size: 0.85em;
+  margin-left: 1px;
+}
+
+@keyframes cursorBlink {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.infoEmpty {
+  border: 1px dashed rgba(200, 200, 200, 0.08);
+  padding: 14px 16px;
+  font-family: var(--font-hud);
+  font-size: var(--fs-xs);
+  color: var(--ark-primary);
+  opacity: 0.15;
+  letter-spacing: 2px;
+  text-align: center;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// ─── Mobile inline description ──────────────────────────────
+
+.leafDescMobile {
+  display: none;
+  font-family: var(--font-hud);
+  font-size: var(--fs-xs);
+  color: var(--ark-primary);
+  opacity: 0.55;
+  line-height: 1.6;
+  padding: 4px 10px 8px;
+  animation: mobileDescIn 0.15s ease-out;
+}
+
+@keyframes mobileDescIn {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+// ─── Mobile ─────────────────────────────────────────────────
+
+@media (max-width: 768px) {
+  .skillTree {
+    padding-left: 6px;
+  }
+
+  .leafDescMobile {
+    display: block;
+  }
+
+  .leaf {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (max-width: 640px) {
+  .leafRow {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+
+  .leafName {
+    min-width: 0;
+    flex: 1 0 100%;
+  }
+}
+
+// ─── Inverted mode ──────────────────────────────────────────
+
+:global(.inverted) {
+  .branch::before,
+  .branchHeader::before {
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+
+  .leaf::before,
+  .leaf::after {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .leaf.hovered {
+    &::before,
+    &::after {
+      border-color: rgba(0, 0, 0, 0.35);
+    }
+  }
+
+  .leafRow {
+    .hovered & {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+  }
+
+  .leafName {
+    .hovered & {
+      color: var(--ark-text);
+    }
+  }
+
+  .filled {
+    background-color: rgba(0, 0, 0, 0.2);
+
+    .hovered & {
+      background-color: var(--ark-highlight-pink, #e08fff);
+    }
+  }
+
+  .empty {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+
+  .infoPanel {
+    border-color: var(--ark-border);
+  }
+
+  .infoPanelHeader {
+    border-bottom-color: var(--ark-border);
+  }
+
+  .infoEmpty {
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+}

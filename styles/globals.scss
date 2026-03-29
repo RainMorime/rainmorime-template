@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300;400;500&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@400;500;700&display=swap');
+
+@font-face {
+  font-family: 'ZELDA Free';
+  src: url('/fonts/ZELDA Free.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+:root {
+  --black: #000000;
+  --dark-gray: #111111;
+  --gray: #333333;
+  --medium-gray: #777777;
+  --light-gray: #f1f1f1;
+  --white: #ffffff;
+  
+  // --- 字体族 ---
+  --font-display: 'ZELDA Free', 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --font-hud: 'Dosis', sans-serif;
+  --font-mono: 'Consolas', 'Menlo', 'Courier New', monospace;
+  --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-typewriter: 'Courier Prime', 'Courier New', 'Consolas', monospace;
+  --font-family-heading: var(--font-hud);
+  --font-reading: 'Noto Serif SC', 'Source Han Serif SC', 'Noto Sans SC', serif;
+
+  // --- 字号阶梯 ---
+  --fs-micro:   0.5rem;
+  --fs-2xs:     0.55rem;
+  --fs-xs:      0.6rem;
+  --fs-sm:      0.65rem;
+  --fs-caption: 0.75rem;
+  --fs-base:    0.8rem;
+  --fs-body:    0.9rem;
+  --fs-md:      1rem;
+  --fs-sub:     1.1rem;
+  --fs-lg:      1.2rem;
+  --fs-xl:      1.3rem;
+  --fs-2xl:     1.4rem;
+  --fs-3xl:     1.5rem;
+  --fs-title:   2rem;
+  --fs-display: 3rem;
+  --fs-hero:    4.5rem;
+
+  --transition-slow: 0.7s cubic-bezier(0.6, 0.05, 0.01, 0.9);
+  --transition-medium: 0.5s cubic-bezier(0.6, 0.05, 0.01, 0.9);
+  --transition-fast: 0.3s cubic-bezier(0.6, 0.05, 0.01, 0.9);
+
+  --ark-primary: rgba(200, 200, 200, 0.8);
+  --ark-primary-glow: rgba(150, 150, 150, 0.5);
+  --ark-accent: rgba(220, 220, 220, 1);
+  --ark-dark-blue: #1a1a1a;
+  --ark-border: rgba(255, 255, 255, 0.15);
+  --ark-text: rgba(230, 230, 230, 0.9);
+  --ark-bg-dark: #1a1a1a;
+  --ark-highlight: rgba(255, 255, 255, 0.85);
+  --ark-highlight-green: #b2f2bb;
+
+  // --- 响应式布局变量 ---
+  --font-size-base: clamp(13px, 0.5vw + 11px, 18px);
+  --spacing-section-top: clamp(80px, 12vw, 200px);
+  --spacing-section-pad: clamp(16px, 3vw, 40px);
+  --spacing-hud: clamp(12px, 1.5vw, 24px);
+
+  // 桌面端布局
+  --left-panel-width: 56%;
+  --content-offset: 48%;
+  --content-width: 52%;
+}
+
+// 平板断点 (< 1024px): 左面板折叠为抽屉
+@media (max-width: 1023px) {
+  :root {
+    --left-panel-width: 280px;
+    --content-offset: 0;
+    --content-width: 100%;
+  }
+}
+
+// 移动断点 (< 768px): 底部导航 + 全屏内容
+@media (max-width: 767px) {
+  :root {
+    --left-panel-width: 85vw;
+    --content-offset: 0;
+    --content-width: 100%;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-hud);
+  background-color: #0d0d0d; /* 暗色背景 */
+  color: #e0e0e0; /* 浅色文本 */
+  /* 新增: 隐藏 body 滚动条 */
+  overflow: hidden; /* 隐藏所有溢出 */
+  scrollbar-width: none; /* Firefox */
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none; /* 隐藏系统光标 */
+  
+  @media (max-width: 1023px) {
+    cursor: auto; /* 平板/移动端恢复系统光标 */
+  }
+}
+
+body::-webkit-scrollbar {
+  display: none; 
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  cursor: none;
+  @media (max-width: 1023px) { cursor: auto; }
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-hud);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: var(--font-hud);
+  cursor: none;
+  @media (max-width: 1023px) { cursor: auto; }
+}
+
+.section {
+  padding: 6rem 0;
+  background-color: var(--ark-dark-blue) !important;
+}
+
+.container {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  border: 1px solid var(--dark-gray);
+  font-size: var(--fs-body);
+  letter-spacing: 1px;
+  background: transparent;
+  color: var(--dark-gray);
+  cursor: none;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  
+  &:hover {
+    background: var(--dark-gray);
+    color: var(--white);
+  }
+}
+
+.cursor {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 1px solid var(--dark-gray);
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease;
+  
+  &.active {
+    transform: translate(-50%, -50%) scale(0.8);
+    background-color: var(--dark-gray);
+    mix-blend-mode: screen;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+.slide-up {
+  animation: slideUp 0.8s ease forwards;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.hidden {
+  overflow: hidden;
+}
+
+/* 响应式断点 — 字号已由 :root --font-size-base clamp() 处理 */
+@media (max-width: 767px) {
+  .section {
+    padding: 3rem 0;
+  }
+}
+
+/* 添加滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 25, 40, 0.7);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ark-primary);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ark-accent);
+}
+
+/* 文本选择样式 — 灰白底 + 反色文字 */
+::selection {
+  background: rgba(230, 230, 230, 0.85);
+  color: #1a1a1a;
+  text-shadow: none;
+}
+
+::-moz-selection {
+  background: rgba(230, 230, 230, 0.85);
+  color: #1a1a1a;
+  text-shadow: none;
+}
+
+/* 统一footer背景色 */
+.footer {
+  background-color: var(--ark-dark-blue) !important;
+}
+
+/* 为所有页面元素统一设置背景色 */
+body > div,
+#__next,
+#__next > div {
+  background-color: var(--ark-dark-blue);
+}
+
+.three-canvas-container {
+  position: fixed; /* 固定在视口 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* 将其置于页面内容之后 */
+  overflow: hidden; /* 防止画布内容溢出 */
+
+  canvas {
+    display: block; /* 移除 canvas 下方的额外空间 */
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* 确保 body 和其他主要容器不会覆盖 Canvas */
+body, html, #__next {
+  /* 可能需要调整背景色或透明度，取决于你的设计 */
+  background-color: transparent; /* 让 Three.js 背景可见 */
+}
+
+/* 你可能还需要调整现有布局的 z-index 或背景色，
+   以确保它们位于 Three.js Canvas 之上 */
+/* 例如，如果你的主内容区有一个白色背景，
+   你需要确保它的 z-index 高于 -1，或者背景是透明的 */
+
+/* 无障碍: 尊重用户的减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,245 @@
+import { createContext, useContext, useCallback, useRef, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useApp } from './AppContext';
+
+interface TransitionContextValue {
+  navigateTo: (url: string, options?: { scroll?: boolean }) => void;
+  setBackOverride: (handler: (() => void) | null) => void;
+  handleBack: () => void;
+  isDetailOpen: () => boolean;
+}
+
+const TransitionContext = createContext<TransitionContextValue>({
+  navigateTo: () => {},
+  setBackOverride: () => {},
+  handleBack: () => {},
+  isDetailOpen: () => false,
+});
+
+export const useTransition = () => useContext(TransitionContext);
+
+interface TransitionProviderProps {
+  children: React.ReactNode;
+  pageWrapperRef: React.RefObject<HTMLDivElement>;
+}
+
+const SLIDE_IN_KF: Keyframe[] = [
+  { opacity: 0, transform: 'translateX(100%)' },
+  { opacity: 1, transform: 'translateX(0)' },
+];
+const SLIDE_IN_OPTS: KeyframeAnimationOptions = {
+  duration: 1800,
+  easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+  fill: 'both',
+};
+
+const SLIDE_OUT_KF: Keyframe[] = [
+  { opacity: 1, transform: 'translateX(0)' },
+  { opacity: 0, transform: 'translateX(100%)' },
+];
+const SLIDE_OUT_OPTS: KeyframeAnimationOptions = {
+  duration: 500,
+  easing: 'ease-in',
+  fill: 'forwards',
+};
+
+const DIAG_EXPAND_KF: Keyframe[] = [
+  { clipPath: 'inset(4% 100% 100% 4%)' },
+  { clipPath: 'inset(0 0 0 0)' },
+];
+const DIAG_EXPAND_OPTS: KeyframeAnimationOptions = {
+  duration: 900,
+  easing: 'cubic-bezier(0.25, 0.8, 0.25, 1)',
+  fill: 'both',
+};
+
+const DIAG_COLLAPSE_KF: Keyframe[] = [
+  { clipPath: 'inset(0 0 0 0)' },
+  { clipPath: 'inset(100% 0 0 100%)' },
+];
+const DIAG_COLLAPSE_OPTS: KeyframeAnimationOptions = {
+  duration: 400,
+  easing: 'ease-in',
+  fill: 'forwards',
+};
+
+const checkMobile = () =>
+  typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches;
+
+export function TransitionProvider({ children, pageWrapperRef }: TransitionProviderProps) {
+  const router = useRouter();
+  const { retractColumns, expandColumns } = useApp();
+  const isTransitioning = useRef(false);
+  const queuedNav = useRef<{ url: string; options?: { scroll?: boolean } } | null>(null);
+  const backOverrideRef = useRef<(() => void) | null>(null);
+  const activeAnim = useRef<Animation | null>(null);
+  const navigateToRef = useRef<((url: string, options?: { scroll?: boolean }) => void) | null>(null);
+
+  const cancelActiveAnim = () => {
+    if (activeAnim.current) {
+      activeAnim.current.cancel();
+      activeAnim.current = null;
+    }
+  };
+
+  const processQueue = () => {
+    if (queuedNav.current && navigateToRef.current) {
+      const nextNav = queuedNav.current;
+      queuedNav.current = null;
+      // Use setTimeout to avoid synchronous nested calls
+      setTimeout(() => {
+        navigateToRef.current?.(nextNav.url, nextNav.options);
+      }, 0);
+    }
+  };
+
+  const navigateTo = useCallback((url: string, options?: { scroll?: boolean }) => {
+    if (isTransitioning.current) {
+      // If returning to the same URL we are currently transitioning to, ignore.
+      queuedNav.current = { url, options };
+      return;
+    }
+
+    const wrapper = pageWrapperRef.current;
+    if (!wrapper) {
+      router.push(url, undefined, { scroll: false, ...options });
+      return;
+    }
+
+    isTransitioning.current = true;
+    queuedNav.current = null;
+    cancelActiveAnim();
+    const currentlyHome = router.pathname === '/';
+    const goingHome = url === '/';
+
+    const pushThen = (target: string, cb: () => void, pushOpts?: any) => {
+      const onComplete = () => {
+        router.events.off('routeChangeComplete', onComplete);
+        cb();
+      };
+      router.events.on('routeChangeComplete', onComplete);
+      router.push(target, undefined, { scroll: false, ...pushOpts });
+    };
+
+    const wapiSlideIn = () => {
+      const anim = wrapper.animate(SLIDE_IN_KF, SLIDE_IN_OPTS);
+      activeAnim.current = anim;
+      anim.finished.then(() => {
+        wrapper.style.opacity = '';
+        wrapper.style.transform = '';
+        anim.cancel();
+        activeAnim.current = null;
+        isTransitioning.current = false;
+        processQueue();
+      }).catch(() => {});
+    };
+
+    const mobile = checkMobile();
+
+    const wapiDiagExpand = () => {
+      wrapper.style.opacity = '';
+      const anim = wrapper.animate(DIAG_EXPAND_KF, DIAG_EXPAND_OPTS);
+      activeAnim.current = anim;
+      anim.finished.then(() => {
+        wrapper.style.clipPath = '';
+        wrapper.style.transform = '';
+        anim.cancel();
+        activeAnim.current = null;
+        isTransitioning.current = false;
+        processQueue();
+      }).catch(() => {});
+    };
+
+    if (currentlyHome && !goingHome) {
+      if (mobile) {
+        // Mobile forward: diagonal collapse home → push → diagonal expand content
+        retractColumns(() => {});
+        const anim = wrapper.animate(DIAG_COLLAPSE_KF, DIAG_COLLAPSE_OPTS);
+        activeAnim.current = anim;
+        anim.finished.then(() => {
+          anim.cancel();
+          activeAnim.current = null;
+          wrapper.style.clipPath = 'inset(100%)';
+          pushThen(url, wapiDiagExpand, options);
+        }).catch(() => {});
+      } else {
+        // Desktop forward: retract columns → hide wrapper → push → slide in
+        retractColumns(() => {
+          wrapper.style.opacity = '0';
+          pushThen(url, wapiSlideIn, options);
+        });
+      }
+    } else if (!currentlyHome && goingHome) {
+      if (mobile) {
+        // Mobile back: diagonal collapse content → push home → diagonal expand home
+        const anim = wrapper.animate(DIAG_COLLAPSE_KF, DIAG_COLLAPSE_OPTS);
+        activeAnim.current = anim;
+        anim.finished.then(() => {
+          anim.cancel();
+          activeAnim.current = null;
+          wrapper.style.clipPath = 'inset(100%)';
+          pushThen('/', () => {
+            expandColumns();
+            wapiDiagExpand();
+          });
+        }).catch(() => {});
+      } else {
+        // Desktop back: slide out → push home → expand columns
+        const anim = wrapper.animate(SLIDE_OUT_KF, SLIDE_OUT_OPTS);
+        activeAnim.current = anim;
+        anim.finished.then(() => {
+          anim.cancel();
+          activeAnim.current = null;
+          wrapper.style.opacity = '0';
+          pushThen('/', () => {
+            wrapper.style.opacity = '';
+            expandColumns(() => {
+              isTransitioning.current = false;
+              processQueue();
+            });
+          });
+        }).catch(() => {});
+      }
+    } else {
+      // Other: WAAPI slide out → push → WAAPI slide in
+      const outAnim = wrapper.animate(SLIDE_OUT_KF, SLIDE_OUT_OPTS);
+      activeAnim.current = outAnim;
+      outAnim.finished.then(() => {
+        outAnim.cancel();
+        activeAnim.current = null;
+        wrapper.style.opacity = '0';
+        pushThen(url, wapiSlideIn, options);
+      }).catch(() => {});
+    }
+  }, [router, pageWrapperRef, retractColumns, expandColumns]);
+
+  // Keep navigateToRef updated
+  useEffect(() => {
+    navigateToRef.current = navigateTo;
+  }, [navigateTo]);
+
+  const setBackOverride = useCallback((handler: (() => void) | null) => {
+    backOverrideRef.current = handler;
+  }, []);
+
+  const handleBack = useCallback(() => {
+    if (backOverrideRef.current) {
+      backOverrideRef.current();
+      return;
+    }
+    const isHome = router.pathname === '/';
+    if (!isHome) {
+      navigateTo('/');
+    }
+  }, [router.pathname, navigateTo]);
+
+  const isDetailOpen = useCallback(() => {
+    return backOverrideRef.current !== null;
+  }, []);
+
+  return (
+    <TransitionContext.Provider value={{ navigateTo, setBackOverride, handleBack, isDetailOpen }}>
+      {children}
+    </TransitionContext.Provider>
+  );
+}

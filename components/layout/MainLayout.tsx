@@ -1,0 +1,271 @@
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
+
+import styles from '../../styles/Home.module.scss';
+import { useApp } from '../../contexts/AppContext';
+import { useTransition } from '../../contexts/TransitionContext';
+import { useResponsive } from '../../hooks/useMediaQuery';
+
+import CustomCursor from '../interactive/CustomCursor';
+import HomeLoadingScreen from '../shared/HomeLoadingScreen';
+import MusicPlayer from '../interactive/MusicPlayer';
+import GlobalHud from './GlobalHud';
+import LeftPanel from './LeftPanel';
+
+
+const TesseractExperience = dynamic(
+  () => import('../effects/TesseractExperience').catch(() => ({
+    default: () => null,
+  })),
+  { ssr: false, loading: () => null }
+);
+
+const RainMorimeEffect = dynamic(
+  () => import('../effects/RainMorimeEffect').catch(() => ({
+    default: () => null,
+  })),
+  { ssr: false, loading: () => null }
+);
+
+export default function MainLayout({ children }) {
+  const router = useRouter();
+  const { navigateTo, handleBack, isDetailOpen } = useTransition();
+  const { isMobile, isDesktop } = useResponsive();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const app = useApp();
+  const {
+    mainVisible, isInverted, isTesseractActivated, animationsComplete,
+    chargeBattery, handleLoadingComplete,
+    currentTime, hudVisible, leftPanelAnimated, leversVisible,
+    handleActivateTesseract, handleDischargeLeverPull, isDischarging,
+    powerLevel, isFateTypingActive, displayedFateText,
+    isEnvParamsTyping, displayedEnvParams, envData, envDataVersion,
+    deactivateTesseract,
+  } = app;
+
+  const isHome = router.pathname === '/';
+  const isContentPage = router.pathname === '/content';
+  const isStandalone = router.pathname === '/game' || router.pathname.startsWith('/game/') || router.pathname.startsWith('/web/') || router.pathname.startsWith('/life/') || router.pathname.startsWith('/blog/');
+
+  const prevStandaloneRef = useRef(isStandalone);
+  const [localPanelAnimated, setLocalPanelAnimated] = useState(leftPanelAnimated);
+  const [localLeversVisible, setLocalLeversVisible] = useState(leversVisible);
+
+  useEffect(() => {
+    const wasStandalone = prevStandaloneRef.current;
+    prevStandaloneRef.current = isStandalone;
+
+    if (wasStandalone && !isStandalone) {
+      // 从独立页返回 → 重置并重播面板和拉杆入场动画
+      setLocalPanelAnimated(false);
+      setLocalLeversVisible(false);
+      const t1 = setTimeout(() => {
+        setLocalPanelAnimated(true);
+      }, 50);
+      const t2 = setTimeout(() => {
+        setLocalLeversVisible(true);
+      }, 850);
+      return () => { clearTimeout(t1); clearTimeout(t2); };
+    } else if (isStandalone) {
+      // 进入独立页 → 快速收回面板
+      setLocalPanelAnimated(false);
+      setLocalLeversVisible(false);
+    } else {
+      // 正常流程（包括初始加载）→ 直接同步全局状态，不干扰
+      setLocalPanelAnimated(leftPanelAnimated);
+      setLocalLeversVisible(leversVisible);
+    }
+  }, [isStandalone, leftPanelAnimated, leversVisible]);
+
+  const [forceHomeSection, setForceHomeSection] = useState(false);
+  useEffect(() => {
+    if (isHome) setForceHomeSection(false);
+  }, [isHome]);
+  const activeSection = (forceHomeSection || isHome) ? 'home' : 'content';
+
+  // Latch: once WebGL is ready, never unmount it (avoids GPU context destruction during transitions)
+  const [webglReady, setWebglReady] = useState(false);
+  useEffect(() => {
+    if (animationsComplete && !webglReady) setWebglReady(true);
+  }, [animationsComplete, webglReady]);
+
+  // 移动端：拉杆激活后直接充电（桌面端由 TesseractExperience 组件负责充电）
+  const chargeBatteryRef = useRef(chargeBattery);
+  chargeBatteryRef.current = chargeBattery;
+  const deactivateTesseractRef = useRef(deactivateTesseract);
+  deactivateTesseractRef.current = deactivateTesseract;
+
+  useEffect(() => {
+    if (!isDesktop && isTesseractActivated) {
+      const interval = setInterval(() => {
+        chargeBatteryRef.current();
+      }, 400);
+      return () => clearInterval(interval);
+    }
+  }, [isDesktop, isTesseractActivated]);
+
+  // 移动端：充满 100% 自动放下充电拉杆
+  useEffect(() => {
+    if (!isDesktop && powerLevel >= 100 && isTesseractActivated) {
+      deactivateTesseractRef.current();
+    }
+  }, [isDesktop, powerLevel, isTesseractActivated]);
+
+  const handleGlobalBackClick = () => {
+    if (!isDetailOpen()) {
+      setForceHomeSection(true);
+    }
+    handleBack();
+  };
+
+  const toggleDrawer = useCallback(() => {
+    setDrawerOpen(prev => !prev);
+  }, []);
+
+  const closeDrawer = useCallback(() => {
+    setDrawerOpen(false);
+  }, []);
+
+  const navLinks = [
+    { label: 'Portfolio', hash: 'works' },
+    { label: 'Experience', hash: 'experience' },
+    { label: 'Blog', hash: 'blog' },
+    { label: 'Life', hash: 'life' },
+    { label: 'Contact', hash: 'contact' },
+    { label: 'About', hash: 'about' },
+  ];
+
+  const handleLeftNavLinkClick = (link: { label: string; hash: string }) => {
+    closeDrawer();
+
+    if (isContentPage) {
+      if (isDetailOpen()) {
+        handleBack();
+        setTimeout(() => {
+          const el = document.getElementById(`section-${link.hash}`);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 1900);
+      } else {
+        const el = document.getElementById(`section-${link.hash}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    } else {
+      navigateTo(`/content#${link.hash}`);
+    }
+  };
+
+  const handleFriendsClick = useCallback(() => {
+    closeDrawer();
+    navigateTo('/friends');
+  }, [navigateTo, closeDrawer]);
+
+  return (
+    <div className={`${styles.container} ${isInverted ? styles.inverted : ''}`}>
+
+
+      <div className={styles.leftDotMatrix}></div>
+      {mainVisible && <MusicPlayer powerLevel={powerLevel} />}
+      {isDesktop && <CustomCursor />}
+      {webglReady && isDesktop && <RainMorimeEffect />}
+      <HomeLoadingScreen onComplete={handleLoadingComplete} />
+      {isTesseractActivated && isDesktop && !isStandalone && (
+        <TesseractExperience
+          chargeBattery={chargeBattery}
+          isActivated={isTesseractActivated}
+          isInverted={isInverted}
+        />
+      )}
+      <div className={styles.gridBackground}></div>
+      <div className={styles.glowEffect}></div>
+      <div className={styles.rightStripeGradient}></div>
+
+      {/* 汉堡菜单按钮 (仅平板端，移动端由底部功能栏替代) */}
+      {mainVisible && (
+        <button
+          className={`${styles.hamburgerButton} ${drawerOpen ? styles.hamburgerOpen : ''}`}
+          onClick={toggleDrawer}
+          aria-label="Toggle menu"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+      )}
+
+      {/* 抽屉背景遮罩 */}
+      <div
+        className={`${styles.drawerBackdrop} ${drawerOpen ? styles.backdropVisible : ''}`}
+        onClick={closeDrawer}
+      />
+
+      {mainVisible && (
+        <>
+          <GlobalHud currentTime={currentTime} hudVisible={hudVisible || isStandalone} isGamePage={router.pathname === '/game'} />
+          <LeftPanel
+            leftPanelAnimated={localPanelAnimated}
+            mainVisible={mainVisible}
+            leversVisible={localLeversVisible}
+            handleActivateTesseract={handleActivateTesseract}
+            isTesseractActivated={isTesseractActivated}
+            handleDischargeLeverPull={handleDischargeLeverPull}
+            isDischarging={isDischarging}
+            activeSection={activeSection}
+            handleGlobalBackClick={handleGlobalBackClick}
+            navLinks={navLinks}
+            handleLeftNavLinkClick={handleLeftNavLinkClick}
+            handleFriendsClick={handleFriendsClick}
+            powerLevel={powerLevel}
+            isFateTypingActive={isFateTypingActive}
+            displayedFateText={displayedFateText}
+            isEnvParamsTyping={isEnvParamsTyping}
+            displayedEnvParams={displayedEnvParams}
+            isInverted={isInverted}
+            drawerOpen={drawerOpen}
+            envData={envData}
+            envDataVersion={envDataVersion}
+            isStandalone={isStandalone}
+          />
+        </>
+      )}
+      <div style={{
+        opacity: mainVisible ? 1 : 0,
+        pointerEvents: mainVisible ? 'auto' : 'none',
+        transition: 'opacity 0.4s ease-out',
+      }}>
+        {children}
+      </div>
+
+      {/* 底部功能栏 (移动端) */}
+      {mainVisible && isMobile && (
+        <nav className={styles.bottomBar}>
+          <button
+            className={`${styles.bottomBarBtn} ${isHome ? styles.bottomBarDisabled : ''}`}
+            onClick={() => { if (!isHome) handleGlobalBackClick(); }}
+          >
+            <span className={styles.bottomBarIcon}>◁</span>
+            <span className={styles.bottomBarIndicator} />
+          </button>
+          <button
+            className={`${styles.bottomBarBtn} ${isHome ? styles.bottomBarCurrent : ''}`}
+            onClick={() => { if (!isHome) navigateTo('/'); }}
+          >
+            <span className={styles.bottomBarIcon}>⬡</span>
+            <span className={styles.bottomBarIndicator} />
+          </button>
+          <button
+            className={`${styles.bottomBarBtn} ${drawerOpen ? styles.bottomBarActive : ''}`}
+            onClick={toggleDrawer}
+          >
+            <span className={styles.bottomBarIcon}>{drawerOpen ? '✕' : '☰'}</span>
+            <span className={styles.bottomBarIndicator} />
+          </button>
+        </nav>
+      )}
+    </div>
+  );
+}
