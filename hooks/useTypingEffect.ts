@@ -10,8 +10,8 @@ export function useFateTypingEffect(textVisible: boolean): FateTypingState {
 
   useEffect(() => {
     if (textVisible) {
-      const englishText = "Our Destinies Entwine At This Moment";
-      const chineseText = "你我命运于此刻纠缠不休，守林人。";
+      const englishText = "Replace This With Your Own Tagline";
+      const chineseText = "在这里写你自己的签名";
       const typingDelay = 80;
       const deleteDelay = 50;
       const chineseTypingDelay = 150;

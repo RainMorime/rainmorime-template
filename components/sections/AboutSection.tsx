@@ -32,7 +32,7 @@ export default function AboutSection({
         <div className={styles.aboutImageContainer}>
           {/* Replace with your own image or QR code */}
           <img
-            src="https://placehold.co/200x200/1a1a2e/b2f2bb?text=QR"
+            src="https://placehold.co/200x200/0d0d0d/b2f2bb?text=QR"
             alt="Website QR Code"
             className={styles.aboutImage}
           />
@@ -42,12 +42,12 @@ export default function AboutSection({
         <div className={styles.aboutNewImageContainer}>
           {/* Replace with your own decorative images */}
           <img
-            src="https://placehold.co/400x600/1a1a2e/b2f2bb?text=Avatar"
+            src="https://placehold.co/400x600/0d0d0d/b2f2bb?text=Avatar"
             alt="About decorative"
             className={`${styles.aboutNewImageBase} ${styles.aboutNewImageNormal}`}
           />
           <img
-            src="https://placehold.co/400x600/2e1a2e/f2b2d8?text=Avatar+Alt"
+            src="https://placehold.co/400x600/0d0d0d/f2b2d8?text=Avatar+Alt"
             alt="About decorative alt"
             className={`${styles.aboutNewImageBase} ${styles.aboutNewImageInverted}`}
           />

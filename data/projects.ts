@@ -18,10 +18,10 @@ export const webProjects: Project[] = [
     ],
     link: '#',
     liveUrl: 'https://example.com',
-    imageUrl: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Project+1',
+    imageUrl: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Project+1',
     galleryImages: [
-      { src: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Screenshot+1' },
-      { src: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Screenshot+2' },
+      { src: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Screenshot+1' },
+      { src: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Screenshot+2' },
     ],
     articleContent: `This is your portfolio website. Replace this text with a description of your project.
 
@@ -41,9 +41,9 @@ You can include links, markdown-style formatting, and multiple paragraphs to des
     ],
     link: '#',
     liveUrl: 'https://example.com',
-    imageUrl: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Project+2',
+    imageUrl: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Project+2',
     galleryImages: [
-      { src: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Gallery+1' },
+      { src: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Gallery+1' },
     ],
     articleContent: `Describe what makes this project special.
 
@@ -69,9 +69,9 @@ export const earlyProjects: Project[] = [
     status: 'archived',
     tech: ['HTML', 'CSS'],
     link: '#',
-    imageUrl: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Early+Project',
+    imageUrl: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Early+Project',
     galleryImages: [
-      { src: 'https://placehold.co/800x450/1a1a2e/b2f2bb?text=Learning' },
+      { src: 'https://placehold.co/800x450/0d0d0d/b2f2bb?text=Learning' },
     ],
     articleContent: `Share your learning journey here.`,
   },

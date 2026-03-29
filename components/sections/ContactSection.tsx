@@ -9,6 +9,7 @@ export default function ContactSection({
   return (
     <div id="contact-section" ref={contactSectionRef} className={`${styles.contentSection} ${styles.contactSection}`}>
       <h2>CONTACT</h2>
+      {/* Radar animation — part of the HUD design, not a replaceable image */}
       <div className={styles.radarDisplay}>
         <div className={styles.scanner}></div>
         <div className={`${styles.radarRipple} ${styles.ripple1}`}></div>

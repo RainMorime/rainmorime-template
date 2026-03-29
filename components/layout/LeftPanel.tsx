@@ -155,13 +155,14 @@ export default function LeftPanel({
           />
         ))}
       </div>
+      {/* Replace with your own link or remove */}
       <a
-        href="https://www.travellings.cn/go.html"
+        href="https://example.com"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.travellingLink}
       >
-        <img src="/travel.svg" alt="Travelling" />
+        <img src="/travel.svg" alt="External link" />
       </a>
     </div>
   );
