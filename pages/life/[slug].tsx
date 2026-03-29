@@ -138,7 +138,7 @@ function LifeDetailContent({ item }: PageProps) {
     };
   }, []);
 
-  // RAINMORIME-style character reveal animation (deferred)
+  // Character reveal animation (deferred)
   useEffect(() => {
     if (!titleRef.current) return;
     const timer = setTimeout(() => {
@@ -259,9 +259,9 @@ function LifeDetailContent({ item }: PageProps) {
   return (
     <div ref={wrapperRef} className={`${styles.pageWrapper} ${isInverted ? hudStyles.inverted : ''}`}>
       <Head>
-        <title>{`${item.title.toUpperCase()} // RAINMORIME`}</title>
-        <meta name="description" content={`${item.title} — RAINMORIME`} />
-        <link rel="preload" as="image" href={`${coverImg}?imageMogr2/quality/80/format/webp`} />
+        <title>{`${item.title.toUpperCase()} // LIFE`}</title>
+        <meta name="description" content={item.title} />
+        <link rel="preload" as="image" href={coverImg} />
       </Head>
 
       <div className={styles.mainContent}>
@@ -271,7 +271,7 @@ function LifeDetailContent({ item }: PageProps) {
             <div
               ref={heroBgRef}
               className={styles.heroBg}
-              style={{ backgroundImage: `url(${coverImg}?imageMogr2/quality/80/format/webp)` }}
+              style={{ backgroundImage: `url(${coverImg})` }}
             />
             <div className={styles.heroScanlines} />
             <div className={styles.heroOverlay} />

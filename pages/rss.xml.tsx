@@ -2,8 +2,8 @@ import type { GetServerSideProps } from 'next';
 import { getAllPosts } from '../lib/blog';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
-const SITE_TITLE = 'RAINMORIME';
-const SITE_DESCRIPTION = '森雨的博客';
+const SITE_TITLE = 'My Portfolio';
+const SITE_DESCRIPTION = 'Personal blog';
 
 function escapeXml(str: string): string {
   return str

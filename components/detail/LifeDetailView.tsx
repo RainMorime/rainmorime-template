@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import styles from '../../styles/LifeDetailView.module.scss';
 import Lightbox from '../interactive/Lightbox';
 import LazyImage from '../shared/LazyImage';
-import { ImageManager } from '../../lib/imageUtils';
+
 
 const LifeDetailView = ({ item }) => {
   if (!item) return null; // 如果没有选中项，则不渲染
@@ -138,209 +138,15 @@ const LifeDetailView = ({ item }) => {
                   {paragraphs.map((paragraph, index) => {
                     let imagesToRenderAfter = []; // 存储在此段落后渲染的图片或链接对象
 
-                    // --- 特定 Life Item 的图片/链接插入逻辑 ---
-                    // 根据 item.id 和段落索引 (index) 决定插入哪些内容
+                    // To insert images between paragraphs for specific items,
+                    // match by item.id and paragraph index, then push to imagesToRenderAfter.
+                    // Example:
+                    // if (item.id === 'my-item' && index === 1) {
+                    //   const imgIdx = imagesForGallery.findIndex(img => img.src === 'your-image-url');
+                    //   if (imgIdx !== -1) imagesToRenderAfter.push({ info: imagesForGallery[imgIdx], lightboxIndex: imgIdx });
+                    // }
                     
-                    // 怪物猎人 (mh)
-                    if (item.id === 'mh') {
-                      if (index === paragraphs.length - 1) { // 最后一段后
-                        const mh4Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Monster_Hunter/MH4.jpg?imageMogr2/quality/50/format/webp');
-                        if (mh4Index !== -1) imagesToRenderAfter.push({ info: imagesForGallery[mh4Index], lightboxIndex: mh4Index });
-                        imagesToRenderAfter.push('separator'); // 分隔符，用于后续渲染链接列表
-                        imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV1n5aTebESo', text: '鏖战冰牙龙' });
-                        imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV1uNapeDEcS', text: '初见冰呪龙' });
-                      }
-                    } 
-                    // Minecraft (mc)
-                    else if (item.id === 'new_minecraft') { // UPDATED item.id
-                      let imageToInsertSrc = null;
-                      let imageCaption = null; // Optional caption for specific image
-
-                      if (index === 1) { // 第二段后
-                        imageToInsertSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Minecraft/MC2024.png?imageMogr2/quality/50/format/webp';
-                        // imageCaption = 'MC2024 Caption'; // Example if needed
-                      } else if (index === 2) { // 第三段后
-                        imageToInsertSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Minecraft/MC2.png?imageMogr2/quality/50/format/webp';
-                      } else if (index === 4) { // 第五段后
-                        imageToInsertSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Minecraft/yh.jpg?imageMogr2/quality/50/format/webp';
-                      } else if (index === paragraphs.length - 1) { // 最后一段后
-                        imageToInsertSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Minecraft/MC2025.png?imageMogr2/quality/50/format/webp';
-                      }
-
-                      if (imageToInsertSrc) {
-                        const imgIndexInGallery = imagesForGallery.findIndex(img => img.src === imageToInsertSrc);
-                        if (imgIndexInGallery !== -1) {
-                          // Use caption from galleryImages if available, or the specific one if defined
-                          const captionToUse = imageCaption || imagesForGallery[imgIndexInGallery].caption;
-                          imagesToRenderAfter.push({ 
-                            info: { ...imagesForGallery[imgIndexInGallery], caption: captionToUse }, 
-                            lightboxIndex: imgIndexInGallery,
-                            sourceTypeIdentifier: 'mc' // Add a specific identifier for Minecraft article images
-                          });
-                        }
-                      }
-                      
-                      if (index === paragraphs.length - 1) { // 最后一段后加链接 (保持原有链接逻辑)
-                          imagesToRenderAfter.push('separator'); 
-                          imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV13G411D7Gq', text: '营火服务器实况' });
-                          imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV1ce411D7dG', text: '营火高级幻岛' });
-                      }
-                    } 
-                    // 吉林 (jilin)
-                    else if (item.id === 'jilin') {
-                      if (index === 3) { // 第4段后
-                        const jilin1Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/jilin/JL1.jpg?imageMogr2/quality/50/format/webp');
-                        if (jilin1Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[jilin1Index], caption: '高考结束那天，黑云分界线如刀切一般，太阳也正展现着它的曙光' }, lightboxIndex: jilin1Index });
-                      } else if (index === 4) { // 第5段后
-                        const jilin5Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/jilin/JL5.jpg?imageMogr2/quality/50/format/webp');
-                        if (jilin5Index !== -1) imagesToRenderAfter.push({ info: imagesForGallery[jilin5Index], lightboxIndex: jilin5Index });
-                      }
-                    }
-                    // 青海 (qinghai)
-                    else if (item.id === 'qinghai') {
-                      let targetImageSrc = null, targetCaption = null, isRow = false;
-                      let secondTargetImageSrc = null, secondTargetCaption = null;
-                      let multipleImages = [];
-
-                      if (index === 1) { // 第2段后 (图片行)
-                        isRow = true;
-                        targetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH5.jpg?imageMogr2/quality/50/format/webp'; targetCaption = '凌晨的坎布拉';
-                        secondTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH6.jpg?imageMogr2/quality/50/format/webp'; secondTargetCaption = '我俩在黑夜打着手电筒交替前行';
-                      } else if (index === 4) { // 第5段 (最后一段) 后 (多图堆叠)
-                        multipleImages = [
-                          { src: 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH12.jpg?imageMogr2/quality/50/format/webp', caption: '青海湖' },
-                          { src: 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH18.jpg?imageMogr2/quality/50/format/webp', caption: '落日下的茶卡盐湖' },
-                          { src: 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH36.jpg?imageMogr2/quality/50/format/webp', caption: '岗什卡脚下的信号塔' },
-                          { src: 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/qinghai/QH40.jpg?imageMogr2/quality/50/format/webp', caption: '风雪中的岗什卡' },
-                        ];
-                      }
-
-                      if (targetImageSrc) {
-                        const imgIndex = imagesForGallery.findIndex(img => img.src === targetImageSrc);
-                        if (imgIndex !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[imgIndex], caption: targetCaption }, lightboxIndex: imgIndex });
-                      }
-                      if (isRow && secondTargetImageSrc) {
-                        const secondImgIndex = imagesForGallery.findIndex(img => img.src === secondTargetImageSrc);
-                        if (secondImgIndex !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[secondImgIndex], caption: secondTargetCaption }, lightboxIndex: secondImgIndex });
-                      }
-                      if (multipleImages.length > 0) {
-                        multipleImages.forEach(imgInfo => {
-                          const imgIndex = imagesForGallery.findIndex(img => img.src === imgInfo.src);
-                          if (imgIndex !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[imgIndex], caption: imgInfo.caption }, lightboxIndex: imgIndex });
-                        });
-                      }
-                    }
-                    // 韩国 (korea)
-                    else if (item.id === 'korea') {
-                      if (index === 1) { // 第2段后
-                        const hg3Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/travel/hanguo/HG3.jpg?imageMogr2/quality/50/format/webp');
-                        if (hg3Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[hg3Index], caption: '我和父母一起吃烤肉' }, lightboxIndex: hg3Index });
-                      }
-                    }
-                    // 东方凭依华 (thif)
-                    else if (item.id === 'thif') {
-                      if (index === paragraphs.length - 1) { // 最后一段后
-                        const cg1Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Touhou/CG1.png?imageMogr2/quality/50/format/webp');
-                        if (cg1Index !== -1) imagesToRenderAfter.push({ info: imagesForGallery[cg1Index], lightboxIndex: cg1Index });
-                      }
-                    }
-                    // 黑神话：悟空 (bmwk)
-                    else if (item.id === 'bmwk') { 
-                      if (index === paragraphs.length - 1) { // 最后一段后
-                        imagesToRenderAfter.push('separator');
-                        imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV1bKtXeoET6', text: '实体版开箱' });
-                      }
-                    }
-                    // 泰坦陨落 (titanfall)
-                    else if (item.id === 'titanfall') {
-                      if (index === paragraphs.length - 1) { // 最后一段后
-                        const imgIndex = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Titalfall/titan4.jpg?imageMogr2/quality/50/format/webp');
-                        if (imgIndex !== -1) imagesToRenderAfter.push({ info: imagesForGallery[imgIndex], lightboxIndex: imgIndex });
-                      }
-                    }
-                    // 实体游戏收藏 (physical-games)
-                    else if (item.id === 'physical-games') {
-                      if (index === 1) { // 第二段后
-                        const sc13Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/collection/SC13.jpg?imageMogr2/quality/50/format/webp');
-                        if (sc13Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[sc13Index], caption: 'Minecraft黑胶唱片' }, lightboxIndex: sc13Index });
-                      } else if (index === paragraphs.length - 1) { // 最后一段后
-                        const sc7Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/collection/SC7.jpg?imageMogr2/quality/50/format/webp');
-                        if (sc7Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[sc7Index], caption: '《樱之诗》实体版' }, lightboxIndex: sc7Index });
-                      }
-                    }
-                    // 白色相簿 (wa)
-                    else if (item.id === 'wa') {
-                      let waTargetImageSrc = null, waTargetCaption = null, waIsRow = false;
-                      let waSecondTargetImageSrc = null, waSecondTargetCaption = null;
-
-                      if (index === 0) { 
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w1.jpg?imageMogr2/quality/50/format/webp';
-                      } else if (index === 2) { 
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w3.jpg?imageMogr2/quality/50/format/webp'; waTargetCaption = '小夜子名场面';
-                      } else if (index === 3) { 
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w15.jpg?imageMogr2/quality/50/format/webp'; waTargetCaption = '理奈放弃自己的偶像事业后与冬弥来到海边';
-                      } else if (index === 5) { 
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w18.jpg?imageMogr2/quality/50/format/webp'; waTargetCaption = '小夜子和冬弥相互依偎';
-                      } else if (index === 6) { 
-                        waIsRow = true;
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w16.jpg?imageMogr2/quality/50/format/webp'; waTargetCaption = '遥';
-                        waSecondTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w20.jpg?imageMogr2/quality/50/format/webp'; waSecondTargetCaption = '弥生';
-                      } else if (index === 8) { 
-                        waTargetImageSrc = 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/WHITE_ALBUM/w2.jpg?imageMogr2/quality/50/format/webp';
-                      } else if (index === paragraphs.length - 1) {
-                      }
-
-                      if (waTargetImageSrc) {
-                        const imgIndex = imagesForGallery.findIndex(img => img.src === waTargetImageSrc);
-                        if (imgIndex !== -1) {
-                          const caption = waTargetCaption || imagesForGallery[imgIndex].caption;
-                          imagesToRenderAfter.push({ info: { ...imagesForGallery[imgIndex], caption }, lightboxIndex: imgIndex });
-                        }
-                      }
-                      if (waIsRow && waSecondTargetImageSrc) {
-                         const secondImgIndex = imagesForGallery.findIndex(img => img.src === waSecondTargetImageSrc);
-                         if (secondImgIndex !== -1) {
-                           const caption = waSecondTargetCaption || imagesForGallery[secondImgIndex].caption;
-                           imagesToRenderAfter.push({ info: { ...imagesForGallery[secondImgIndex], caption }, lightboxIndex: secondImgIndex });
-                         }
-                      }
-                    }
-                    // Stray (stray)
-                    else if (item.id === 'stray') {
-                      if (index === paragraphs.length - 1) { // 最后一段后
-                        const stray3Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/Stray/stray3.jpg?imageMogr2/quality/50/format/webp');
-                        if (stray3Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[stray3Index], caption: '初遇B-12' }, lightboxIndex: stray3Index });
-                        imagesToRenderAfter.push('separator');
-                        imagesToRenderAfter.push({ type: 'link', href: 'https://www.bilibili.com/video/BV1jN411h7Ea', text: 'Stray实况视频' });
-                      }
-                    }
-                    // 实体游戏 (physical-games)
-                    else if (item.id === 'physical-games') {
-                        if (index === 1) { // 第二段后
-                            const sc13Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/collection/SC13.jpg?imageMogr2/quality/50/format/webp');
-                            if (sc13Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[sc13Index], caption: 'Minecraft黑胶唱片' }, lightboxIndex: sc13Index });
-                        } else if (index === 2) { // 第三段后
-                            const sc7Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/collection/SC7.jpg?imageMogr2/quality/50/format/webp');
-                            if (sc7Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[sc7Index], caption: '《樱之诗》实体版' }, lightboxIndex: sc7Index });
-                        }
-                    }
-                    // 桌搭 (desk-setup)
-                    else if (item.id === 'desk-setup') {
-                        // 桌搭部分目前只在画廊展示，不在文章中插入特定图片
-                    }
-                    // 硬件 (hardware)
-                    else if (item.id === 'hardware') {
-                        if (index === 0) { // 第一段后
-                            const yj4Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/hard/YJ4.jpg?imageMogr2/quality/50/format/webp');
-                            if (yj4Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[yj4Index], caption: '搭的一台itx服务器' }, lightboxIndex: yj4Index });
-                        } else if (index === 2) { // 第三段后
-                            const yj1Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/pictures/hard/YJ1.jpg?imageMogr2/quality/50/format/webp');
-                            if (yj1Index !== -1) imagesToRenderAfter.push({ info: { ...imagesForGallery[yj1Index], caption: '入手的铁三角唱片机' }, lightboxIndex: yj1Index });
-                        }
-                    }
-                    // --- END 特定 Life Item 图片/链接插入逻辑 ---
-                    
-                    const isStrayQuote = item.id === 'stray' && paragraph.includes('——《我是猫》，夏目漱石'); // Stray 项目的特殊引用块处理
+                    const isStrayQuote = false;
 
                     return (
                       <React.Fragment key={index}>
@@ -357,8 +163,7 @@ const LifeDetailView = ({ item }) => {
                         {imagesToRenderAfter.length > 0 && (
                           <>
                             {/* 渲染图片行 (若适用) */}
-                            {(item.id === 'wa' && index === 6 || item.id === 'qinghai' && index === 1) && 
-                             imagesToRenderAfter.every(i => typeof i === 'object' && i.info) && imagesToRenderAfter.length === 2 && (
+                            {imagesToRenderAfter.every(i => typeof i === 'object' && i.info) && imagesToRenderAfter.length === 2 && (
                               <div className={styles.inlineImageRow} key={`${index}-img-row`}> 
                                 {imagesToRenderAfter.map(({ info, lightboxIndex }) => (
                                   <figure 
@@ -381,8 +186,7 @@ const LifeDetailView = ({ item }) => {
 
                             {/* 渲染堆叠图片 (排除已在行中渲染的) */}
                             {imagesToRenderAfter
-                              .filter(renderItem => typeof renderItem === 'object' && renderItem.info && 
-                                     !(item.id === 'wa' && index === 6 || item.id === 'qinghai' && index === 1))
+                              .filter(renderItem => typeof renderItem === 'object' && renderItem.info)
                               .map(({ info, lightboxIndex, sourceTypeIdentifier }, itemIndex) => { // Added sourceTypeIdentifier
                                 const finalSourceType = `article${sourceTypeIdentifier ? '_' + sourceTypeIdentifier : ''}`;
                                 return (

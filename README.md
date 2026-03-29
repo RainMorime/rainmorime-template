@@ -71,7 +71,7 @@ All personal content is stored in the `data/` directory — edit these files to 
 
 - `components/sections/ContactSection.tsx` — Email, GitHub, social links
 - `components/sections/AboutSection.tsx` — Footer info, license, avatar
-- `public/avatar.jpg` — Your avatar image
+- `public/avatar.svg` — Your avatar image (replace the default placeholder)
 
 ### 3. Blog Posts
 

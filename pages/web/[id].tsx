@@ -291,16 +291,16 @@ function WebDetailContent({ project }: PageProps) {
   return (
     <div ref={wrapperRef} className={`${styles.pageWrapper} ${isInverted ? hudStyles.inverted : ''}`}>
       <Head>
-        <title>{`${project.title.toUpperCase()} // RAINMORIME`}</title>
-        <meta name="description" content={`${project.title} — RAINMORIME`} />
-        {showHero && coverImg && <link rel="preload" as="image" href={`${coverImg}?imageMogr2/quality/80/format/webp`} />}
+        <title>{`${project.title.toUpperCase()} // WORKS`}</title>
+        <meta name="description" content={project.title} />
+        {showHero && coverImg && <link rel="preload" as="image" href={coverImg} />}
       </Head>
 
       <div className={styles.mainContent}>
 
         {showHero ? (
           <section className={styles.hero} ref={(el) => { heroRef.current = el; sectionRefs.current['hero'] = el; }} data-nav-id="hero">
-            <div ref={heroBgRef} className={styles.heroBg} style={coverImg ? { backgroundImage: `url(${coverImg}?imageMogr2/quality/80/format/webp)` } : undefined} />
+            <div ref={heroBgRef} className={styles.heroBg} style={coverImg ? { backgroundImage: `url(${coverImg})` } : undefined} />
             <div className={styles.heroScanlines} />
             <div className={styles.heroOverlay} />
             <div className={styles.heroContent}>

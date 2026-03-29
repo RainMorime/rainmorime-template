@@ -32,10 +32,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>森雨 - RainMorime</title>
-        <meta name="description" content="森雨(RainMorime)的个人网站" />
-        <meta property="og:title" content="森雨 - RainMorime" />
-        <meta property="og:description" content="森雨(RainMorime)的个人网站" />
+        <title>My Portfolio</title>
+        <meta name="description" content="Personal portfolio and blog" />
+        <meta property="og:title" content="My Portfolio" />
+        <meta property="og:description" content="Personal portfolio and blog" />
         <meta property="og:url" content="https://example.com" />
       </Head>
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>

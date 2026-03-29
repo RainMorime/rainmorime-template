@@ -133,7 +133,7 @@ export default function ContentPage({ blogPosts }: ContentPageProps) {
     const coverImg = item.imageUrl?.split('?')[0];
     if (coverImg) {
       const img = new Image();
-      img.src = `${coverImg}?imageMogr2/quality/80/format/webp`;
+      img.src = coverImg;
     }
     const isGame = gameProjects.some((p) => p.id === item.id);
     const isWeb = webProjects.some((p) => p.id === item.id);
@@ -160,14 +160,14 @@ export default function ContentPage({ blogPosts }: ContentPageProps) {
     const coverImg = item.imageUrl?.split('?')[0];
     if (coverImg) {
       const img = new Image();
-      img.src = `${coverImg}?imageMogr2/quality/80/format/webp`;
+      img.src = coverImg;
     }
     navigateTo(`/life/${item.id}`);
   }, [navigateTo]);
 
   // --- Contact handlers ---
   const handleCopyEmail = useCallback(() => {
-    navigator.clipboard.writeText('rainmorime@qq.com').then(() => {
+    navigator.clipboard.writeText('your-email@example.com').then(() => {
       setIsEmailCopied(true);
       setTimeout(() => setIsEmailCopied(false), 1500);
     }).catch(err => console.error('Failed to copy email:', err));
@@ -211,18 +211,18 @@ export default function ContentPage({ blogPosts }: ContentPageProps) {
 
   const detailTitle = isDetailOpen
     ? detail.type === 'work'
-      ? `${detail.item.title} - WORKS - RAINMORIME`
+      ? `${detail.item.title} - WORKS`
       : detail.type === 'experience'
-        ? `${(detail.item as any).title || (detail.item as any).company} - EXPERIENCE - RAINMORIME`
-        : `${detail.item.title} - LIFE - RAINMORIME`
-    : 'RAINMORIME - 森雨';
+        ? `${(detail.item as any).title || (detail.item as any).company} - EXPERIENCE`
+        : `${detail.item.title} - LIFE`
+    : 'My Portfolio';
 
   return (
     <>
       <Head>
         <title>{detailTitle}</title>
         {!isDetailOpen && (
-          <meta name="description" content="森雨(RainMorime)的个人网站 — 探索记录" />
+          <meta name="description" content="Portfolio — Explore" />
         )}
       </Head>
 

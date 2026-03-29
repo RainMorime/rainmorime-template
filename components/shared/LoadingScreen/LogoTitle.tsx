@@ -49,8 +49,9 @@ const LogoTitle = forwardRef<LogoTitleRef>((_, ref) => {
     <div ref={logoAreaRef} className={styles.logo_area}>
       <div className={styles.title_container}>
         <h1 ref={mainTitleRef} className={styles.main_title}>
-          {"RAINMORIME".split("").map((char, index) => (
-            <span key={`rainmorime-${char}-${index}`} className={styles.char_wrapper}>
+          {/* Replace "YOUR_SITE" with your site name */}
+          {"YOUR_SITE".split("").map((char, index) => (
+            <span key={`site-${char}-${index}`} className={styles.char_wrapper}>
               <span className={styles.char_inner}>
                 {char}
               </span>

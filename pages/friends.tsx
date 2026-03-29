@@ -7,7 +7,7 @@ export default function FriendsPage() {
   return (
     <>
       <Head>
-        <title>FRIENDS - RAINMORIME</title>
+        <title>FRIENDS</title>
         <meta name="description" content="友链 — 同行者的信号" />
       </Head>
       <SectionPageLayout>

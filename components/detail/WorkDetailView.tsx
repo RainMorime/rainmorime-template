@@ -173,7 +173,7 @@ const WorkDetailView = ({ item }) => { // Removed onBack prop
               const parts = [];
               let lastIndex = 0;
               // Regex to find Markdown links OR copyable text
-              const combinedRegex = /(\[(.*?)\]\((.*?)\))|(play\.foacraft\.com)|(481423636)/g;
+              const combinedRegex = /(\[(.*?)\]\((.*?)\))/g;
               let match;
 
               while ((match = combinedRegex.exec(paragraphText)) !== null) {
@@ -218,28 +218,6 @@ const WorkDetailView = ({ item }) => { // Removed onBack prop
                       </a>
                     );
                   }
-                } else if (match[4]) { // Server Address found (group 4)
-                  const text = match[4];
-                  const id = `copy-server-${index}`;
-                  parts.push(
-                    <span key={lastIndex} className={styles.copyableTextContainer}> {/* Container for positioning feedback */}
-                      <button onClick={() => handleCopy(text, id)} className={styles.copyableTextButton}>
-                        {text}
-                      </button>
-                      {copiedTextId === id && <span className={styles.copyFeedback}>Copied!</span>}
-                    </span>
-                  );
-                } else if (match[5]) { // QQ Number found (group 5)
-                   const text = match[5];
-                   const id = `copy-qq-${index}`;
-                   parts.push(
-                     <span key={lastIndex} className={styles.copyableTextContainer}>
-                       <button onClick={() => handleCopy(text, id)} className={styles.copyableTextButton}>
-                         {text}
-                       </button>
-                       {copiedTextId === id && <span className={styles.copyFeedback}>Copied!</span>}
-                     </span>
-                   );
                 }
                 
                 lastIndex = match.index + match[0].length;
@@ -254,45 +232,11 @@ const WorkDetailView = ({ item }) => { // Removed onBack prop
             };
             // --- END MODIFY ---
             
-            if (item.id === 7) { // Check if it's the website project (assuming id is 7)
-               if (index === 1) { // After the second paragraph ("...做一个自己的网站。")
-                 const wb0Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/projects/web/wb0.jpg');
-                 if (wb0Index !== -1) {
-                   imagesToRenderAfter.push({
-                     info: { ...imagesForGallery[wb0Index], caption: '以前的网站' },
-                     lightboxIndex: wb0Index,
-                     isLightboxClickable: true,
-                   });
-                 }
-               } else if (index === 2) { // --- ADD: After the third paragraph ("...后话了。")
-                 const wb5Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/projects/web/wb5.png');
-                 if (wb5Index !== -1) {
-                   imagesToRenderAfter.push({ 
-                     info: { ...imagesForGallery[wb5Index], caption: '一些小设定' }, 
-                     lightboxIndex: wb5Index,
-                     isLightboxClickable: true
-                   });
-                 }
-               } else if (index === 3) { // --- MODIFY: After the fourth (now last) paragraph ("一些网站旧设") ---
-                 const wb2Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/projects/web/wb2.png');
-                 if (wb2Index !== -1) {
-                    imagesToRenderAfter.push({ 
-                      info: { ...imagesForGallery[wb2Index], caption: '网站旧设' }, 
-                      lightboxIndex: wb2Index,
-                      isLightboxClickable: true
-                    });
-                 }
-                 const wb4Index = imagesForGallery.findIndex(img => img.src === 'https://rainmorime-1315830626.cos.ap-beijing.myqcloud.com/images/projects/web/wb4.png');
-                 if (wb4Index !== -1) {
-                    imagesToRenderAfter.push({ 
-                      info: { ...imagesForGallery[wb4Index], caption: '网站旧设' }, 
-                      lightboxIndex: wb4Index,
-                      isLightboxClickable: true
-                    });
-                 }
-               }
-            }
-            // --- END ADD ---
+            // To insert images between paragraphs, match by item.id and index:
+            // if (item.id === 1 && index === 1) {
+            //   const imgIdx = imagesForGallery.findIndex(img => img.src === 'your-url');
+            //   if (imgIdx !== -1) imagesToRenderAfter.push({ info: imagesForGallery[imgIdx], lightboxIndex: imgIdx, isLightboxClickable: true });
+            // }
             return (
               <React.Fragment key={index}>
                 <p>{renderParagraphContent(paragraph)}</p>

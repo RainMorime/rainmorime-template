@@ -16,8 +16,8 @@ const LOG_ENTRIES = [
   { threshold: 77, text: "校准工业系统..." },
   { threshold: 83, text: "正在检验系统完整性..." },
   { threshold: 89, text: "准备接入主系统[SYS-000]" },
-  { threshold: 93, text: "WELCOME, MORIME GUARD." },
-  { threshold: 97, text: "欢迎回来，守林人。" },
+  { threshold: 93, text: "SYSTEM READY." },
+  { threshold: 97, text: "WELCOME BACK." },
 ];
 
 const MIN_DISPLAY_TIME = 1800;

@@ -29,7 +29,8 @@ function GlobalHud({ currentTime, hudVisible, isGamePage = false }) {
           <div>SIGNAL: STABLE</div>
         </div>
         <div className={`${styles.hudElement} ${styles.bottomLeft} ${hudVisible ? styles.visible : ''}`}>
-          <div>RAINMORIME</div>
+          {/* Replace with your site name */}
+          <div>YOUR_SITE</div>
         </div>
       </>
     );
@@ -46,7 +47,8 @@ function GlobalHud({ currentTime, hudVisible, isGamePage = false }) {
         <div>CURSOR_Y: <span ref={cursorYRef}>0000</span></div>
       </div>
       <div className={`${styles.hudElement} ${styles.bottomLeft} ${hudVisible ? styles.visible : ''}`}>
-        <div>RAINMORIME</div>
+        {/* Replace with your site name */}
+        <div>YOUR_SITE</div>
         <div>NAV_SYSTEM_v2.4</div>
       </div>
       {!isGamePage && (

@@ -40,7 +40,7 @@ function BlogLoadingShell() {
 
   return (
     <div className={`${styles.pageWrapper} ${isInverted ? hudStyles.inverted : ''}`}>
-      <Head><title>LOADING // RAINMORIME</title></Head>
+      <Head><title>LOADING</title></Head>
       <div className={styles.mainContent}>
         <header className={`${styles.headerSection} ${entered ? styles.entered : ''}`}>
           <div className={styles.headerContent}>
@@ -202,7 +202,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
   return (
     <div ref={wrapperRef} className={`${styles.pageWrapper} ${isInverted ? hudStyles.inverted : ''}`}>
       <Head>
-        <title>{`${meta.title} // RAINMORIME`}</title>
+        <title>{`${meta.title} // Blog`}</title>
         <meta name="description" content={meta.excerpt} />
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.excerpt} />
