@@ -1,7 +1,7 @@
 // @ts-nocheck — R3F JSX elements (group, mesh, etc.) conflict with React 18 JSX types
 import React, { Suspense, useRef, useState, useEffect, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Physics, usePlane, Debug } from '@react-three/cannon';
+import { Physics, usePlane } from '@react-three/cannon';
 import { Line } from '@react-three/drei';
 import * as THREE from 'three';
 import Tesseract from './Tesseract'; // 导入 Tesseract 组件
@@ -218,7 +218,7 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
               ) : (
                  null // 电池位置未就绪则不渲染 Tesseract
               )}
-              {/* <Debug color="blue" scale={1.1} /> */} {/* 可选: 物理调试视图 */}
+              {/* Physics debug view can be enabled by importing Debug from @react-three/cannon */}
             </Physics>
           )}
           {/* 激活且连接时渲染连接线 */}
