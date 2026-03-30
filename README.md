@@ -1,73 +1,57 @@
 **English** | [中文](./README.zh-CN.md)
 
-# RAINMORIME — HUD Portfolio Template
+# RAINMORIME Template
 
-A post-apocalyptic, sci-fi HUD-themed portfolio and blog template built with **Next.js 14**, **TypeScript**, and **SCSS**. Featuring 42 handcrafted CSS animations, a narrative-driven design system, and a built-in MDX blog.
+Your portfolio doesn't have to look like everyone else's.
+
+A post-apocalyptic, sci-fi HUD portfolio and blog template. No card grids, no gradient heroes — open it and you'll see scanlines, ECG waveforms, radar sweeps, and an AI carefully choosing its words.
 
 > **[Live Demo →](https://rainmorime.com)**
 
-<!-- Replace with a screenshot or GIF of your deployed site -->
-<!-- ![Screenshot](./screenshot.png) -->
+<!-- 🖼️ Hero screenshot or GIF needed (15 sec, show hover animations + page transition) -->
+<!-- ![Preview](./docs/preview.gif) -->
 
-## Features
-
-- **Sci-Fi HUD Aesthetic** — Scanlines, ECG waveforms, radar sweeps, and focus-frame animations on every interaction
-- **42 Custom CSS Animations** — All built with `@keyframes`, zero animation libraries for core effects
-- **Power System** — Toggle an "inverted" mode that shifts the entire color palette
-- **Typing Effect** — AI-style text output that simulates deliberate word selection
-- **5-Column Navigation** — Each column has unique hover animations (task list, tower growth, ECG, radar, focus frame)
-- **WebGL Background** — Dynamic rain particle effect (lazy-loaded after animations complete)
-- **MDX Blog** — Write posts in Markdown, auto-generated reading time, tags, and RSS feed
-- **SSE Real-Time Stats** — Live visitor count and uptime, zero external dependencies
-- **Music Player** — Vinyl record UI with drag-to-switch interaction
-- **Fully Responsive** — Works on mobile with adapted animations and touch interactions
-
-## Tech Stack
-
-| Category | Tools |
-|----------|-------|
-| Framework | Next.js 14 (Pages Router) |
-| Language | TypeScript |
-| Styling | SCSS Modules + CSS Custom Properties |
-| Animations | CSS @keyframes, Framer Motion, GSAP |
-| 3D | Three.js + React Three Fiber (lazy-loaded) |
-| Blog | MDX via next-mdx-remote |
-| Server | Custom Node.js server with SSE |
-| Deployment | PM2 |
-
-## Quick Start
+## Getting Started
 
 ```bash
-git clone https://github.com/your-username/rainmorime-template.git
+git clone https://github.com/RainMorime/rainmorime-template.git
 cd rainmorime-template
 npm install
 cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see your site.
+Open `http://localhost:3000`. You'll see the loading sequence, then the five-column navigation. Now replace the placeholder content with your own.
 
-## Customization
+## Make It Yours
 
-### 1. Personal Data
+### Step 1: Basic Info
 
-All personal content is stored in the `data/` directory:
+These are the things you **must** change — otherwise your site will say "YOUR_SITE" and "your-email@example.com":
 
-| File | What to Change |
-|------|----------------|
+| What to change | Where | What to put |
+|----------------|-------|-------------|
+| Site name | `components/layout/GlobalHud.tsx` | Search `YOUR_SITE`, replace with your name |
+| Loading title | `components/shared/LoadingScreen/LogoTitle.tsx` | Same as above |
+| Email | `components/sections/ContactSection.tsx` | Search `your-email@example.com` |
+| Email (copy) | `pages/content.tsx` | Search `your-email@example.com` |
+| Copyright | `components/sections/AboutSection.tsx` | Search `Your Name` |
+| Avatar | `public/avatar.svg` | Replace with your own image |
+| Typing tagline | `hooks/useTypingEffect.ts` | Edit `englishText` and `chineseText` |
+
+### Step 2: Fill In Content
+
+The `data/` directory holds all your content as plain TypeScript arrays — just follow the examples:
+
+| File | Content |
+|------|---------|
 | `data/projects.ts` | Your projects and portfolio items |
-| `data/life.ts` | Games, travel, hobbies |
 | `data/experience.ts` | Education and work timeline |
-| `data/friendLinks.ts` | Blog friend links |
-| `data/skills.ts` | Your skill tree |
+| `data/life.ts` | Games, travel, hobbies |
+| `data/skills.ts` | Skill tree |
+| `data/friendLinks.ts` | Friend links |
 
-### 2. Contact & About
-
-- `components/sections/ContactSection.tsx` — Email, GitHub, social links
-- `components/sections/AboutSection.tsx` — Footer info, license, avatar
-- `public/avatar.svg` — Your avatar image (replace the default placeholder)
-
-### 3. Blog Posts
+### Step 3: Write Blog Posts
 
 Create `.mdx` files in `content/blog/`:
 
@@ -79,73 +63,97 @@ excerpt: "A short description."
 tags: ["hello", "world"]
 ---
 
-Your content here in Markdown.
+Write in Markdown. Supports syntax highlighting, images, and custom components.
 ```
 
-### 4. Music Player
+### Step 4: Optional Configuration
 
-Edit the `playlist` array in `components/interactive/MusicPlayer.tsx`. Place audio files in `public/music/`.
+<details>
+<summary><b>Music Player</b></summary>
 
-### 5. Images
+Edit the `playlist` array at the top of `components/interactive/MusicPlayer.tsx`. Place audio files in `public/music/`. Supports `.mp3` and external URLs.
 
-The template uses placeholder images from [placehold.co](https://placehold.co). Replace image URLs in your data files with your own hosted images.
+</details>
 
-### 6. Colors
+<details>
+<summary><b>Colors</b></summary>
 
-The primary color is controlled by `--ark-highlight-green` in `styles/globals.scss`. The inverted (power-off) palette uses pink tones — both can be customized via CSS variables.
+The primary color is `--ark-highlight-green: #b2f2bb` in `styles/globals.scss`. Change this one variable to re-theme the entire site.
+
+The inverted (power-off) palette uses `--ark-inverted-*` variables in the same file.
+
+</details>
+
+<details>
+<summary><b>Environment Variables</b></summary>
+
+```env
+PORT=3000                                    # Server port, default 3000
+NEXT_PUBLIC_SITE_URL=https://your-domain.com # For sitemap and RSS
+```
+
+</details>
+
+<details>
+<summary><b>Deployment</b></summary>
+
+```bash
+npm run build
+npm start            # or with PM2:
+pm2 start server.js --name my-site
+```
+
+Includes built-in SSE real-time stats (visitor count + online users + uptime) with no external database. Stats persist in `.stats.json` at the project root.
+
+</details>
+
+## Features
+
+- 42 handcrafted CSS animations (scanlines / ECG / radar / focus frame / task list...)
+- Power system: lever-toggle inverted color mode
+- AI-style typing effect
+- Five-column navigation with unique hover animations per column
+- WebGL rain particle background (lazy-loaded, won't block first paint)
+- MDX blog + RSS + auto reading time
+- SSE real-time visitor stats
+- Vinyl record music player
+- Fully responsive on mobile
+
+<!-- 🖼️ Feature screenshots can go here in a table layout -->
+<!-- | Hover animations | Inverted mode | Mobile |
+|-----------------|--------------|--------|
+| ![hover](./docs/hover.gif) | ![inverted](./docs/inverted.png) | ![mobile](./docs/mobile.png) | -->
+
+## Tech Stack
+
+Next.js 14 · TypeScript · SCSS Modules · CSS @keyframes · Framer Motion · GSAP · Three.js · MDX · Node.js SSE
 
 ## Project Structure
 
 ```
-├── pages/              # Next.js file-based routing
+├── pages/              # Page routes
 ├── components/
-│   ├── layout/         # MainLayout, NavigationColumns, HUD, LeftPanel
-│   ├── sections/       # Works, Experience, Life, Contact, About
-│   ├── detail/         # Detail views for portfolio items
-│   ├── effects/        # WebGL background, Noise, Tesseract
-│   ├── interactive/    # Music player, cursor, lightbox, lever
-│   └── shared/         # Reusable components (Timeline, LazyImage, etc.)
-├── hooks/              # Custom React hooks
-├── contexts/           # Global state (AppContext, TransitionContext)
-├── data/               # All personal content (edit these!)
-├── content/blog/       # MDX blog posts
-├── styles/             # SCSS modules and partials
-├── lib/                # Blog utilities
+│   ├── layout/         # Layout (nav, HUD, left panel)
+│   ├── sections/       # Content (Works / Experience / Life / Contact / About)
+│   ├── detail/         # Detail views
+│   ├── effects/        # Visual effects (WebGL, noise, 3D)
+│   ├── interactive/    # Interactive (music player, lightbox, lever)
+│   └── shared/         # Reusable components
+├── hooks/              # Custom hooks
+├── contexts/           # Global state
+├── data/               # ← Your content here
+├── content/blog/       # ← Your blog posts here
+├── styles/             # SCSS stylesheets
 └── server.js           # Custom server (SSE stats)
 ```
 
-## Deployment
-
-### Build for Production
-
-```bash
-npm run build
-npm start
-```
-
-### PM2 (Recommended)
-
-```bash
-pm2 start server.js --name my-portfolio
-```
-
-### Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `PORT` | No | Server port (default: 3000) |
-| `NEXT_PUBLIC_SITE_URL` | No | Your site URL for sitemap/RSS |
-
-## Design Philosophy
-
-This template was born from a narrative concept: a post-apocalyptic world where an AI assistant (the website itself) serves as the interface through which visitors perceive the world. Every design decision — from the HUD overlay to the power system toggle — reflects this worldbuilding.
-
-The green highlight color (`--ark-highlight-green`) serves double duty as both the interface accent and a narrative element. You are free to keep this narrative layer, adapt it to your own story, or strip it entirely and use the template as a pure visual framework.
-
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE) — Free to use, just keep the attribution.
 
-## Acknowledgments
+---
 
-Built with inspiration from sci-fi interfaces in film and games. Original design by [RainMorime](https://github.com/RainMorime).
+Design & development by [RainMorime](https://github.com/RainMorime).
+
+<!-- 🖼️ Optional full-width site screenshot as a footer -->
+<!-- ![Footer](./docs/footer-screenshot.png) -->
