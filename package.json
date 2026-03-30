@@ -24,7 +24,6 @@
     "dotenv": "^16.5.0",
     "gray-matter": "^4.0.3",
     "gsap": "^3.13.0",
-    "lucide-react": "^0.576.0",
     "next": "^14.1.4",
     "next-mdx-remote": "^6.0.0",
     "react": "^18.2.0",
@@ -36,12 +35,10 @@
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^16.1.6",
-    "@playwright/test": "^1.58.2",
     "@types/node": "^25.2.3",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.175.0",
-    "playwright": "^1.58.2",
     "typescript": "^5.9.3"
   }
 }
