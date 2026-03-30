@@ -37,29 +37,20 @@ const LifeDetailView = ({ item }) => {
   // 打开灯箱
   const openLightbox = (index, event, sourceType) => { // ADDED sourceType
     if (imagesForGallery && imagesForGallery.length > 0 && index >= 0 && index < imagesForGallery.length) {
-      console.log(`LifeDetailView: Opening lightbox for index: ${index}, type: ${sourceType}, Event target:`, event.currentTarget);
       let rect;
       if (event && event.currentTarget) {
         rect = event.currentTarget.getBoundingClientRect();
-        console.log(`LifeDetailView: openLightbox - Got rect from event.currentTarget for index ${index}`, rect);
       } else {
         const refKey = `${sourceType}_${index}`;
         const thumb = thumbnailRefs.current[refKey];
         if (thumb) {
           rect = thumb.getBoundingClientRect();
-          console.log(`LifeDetailView: openLightbox - Fallback: Got rect from thumbnailRefs.current[${refKey}]`, rect);
-        } else {
-          console.warn(`LifeDetailView: openLightbox - No event.currentTarget and no thumbnail ref for key ${refKey}`);
         }
       }
-      
-      console.log(`LifeDetailView: Setting clickedThumbnailRect for index ${index}:`, rect);
       setClickedThumbnailRect(rect);
       setCurrentLightboxImageIndex(index);
       setCurrentLightboxSourceInfo({ index, type: sourceType }); // SET source info
       setIsLightboxOpen(true);
-    } else {
-      console.error("LifeDetailView: Cannot open lightbox, invalid index or no images for gallery.");
     }
   };
 
@@ -73,7 +64,6 @@ const LifeDetailView = ({ item }) => {
   const showNextImage = () => {
     if (imagesForGallery.length > 0) {
       const nextIndex = (currentLightboxImageIndex + 1) % imagesForGallery.length;
-      console.log("LifeDetailView: showNextImage, nextIndex:", nextIndex);
       setCurrentLightboxImageIndex(nextIndex);
       setClickedThumbnailRect(null); 
       // Keep currentLightboxSourceInfo as is, assuming next/prev still refers to the same original gallery structure
@@ -84,7 +74,6 @@ const LifeDetailView = ({ item }) => {
   const showPrevImage = () => {
     if (imagesForGallery.length > 0) {
       const prevIndex = (currentLightboxImageIndex - 1 + imagesForGallery.length) % imagesForGallery.length;
-      console.log("LifeDetailView: showPrevImage, prevIndex:", prevIndex);
       setCurrentLightboxImageIndex(prevIndex);
       setClickedThumbnailRect(null); 
       // Keep currentLightboxSourceInfo
@@ -93,21 +82,13 @@ const LifeDetailView = ({ item }) => {
 
   // RENAMED and MODIFIED function
   const getClosingRect = () => {
-    if (!currentLightboxSourceInfo) {
-      console.warn("LifeDetailView: getClosingRect - No currentLightboxSourceInfo available.");
-      return null;
-    }
+    if (!currentLightboxSourceInfo) return null;
     const { index: closingIndex, type: closingType } = currentLightboxSourceInfo;
     const refKey = `${closingType}_${closingIndex}`;
-    console.log(`LifeDetailView: getClosingRect - Attempting for key: ${refKey}`);
-    console.log("LifeDetailView: Current thumbnailRefs.current:", thumbnailRefs.current);
     const thumb = thumbnailRefs.current[refKey];
     if (thumb) {
-      const rect = thumb.getBoundingClientRect();
-      console.log(`LifeDetailView: getClosingRect - Found ref for key ${refKey}, rect:`, rect);
-      return rect;
+      return thumb.getBoundingClientRect();
     }
-    console.warn(`LifeDetailView: getClosingRect - No thumbnail ref found for key: ${refKey}`);
     return null;
   };
 
