@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://example.com/sitemap.xml
+# Replace with your actual domain
+Sitemap: https://your-domain.com/sitemap.xml
