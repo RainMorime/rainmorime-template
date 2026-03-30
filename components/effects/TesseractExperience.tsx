@@ -75,7 +75,7 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
     const batteryElement = document.querySelector(batterySelector);
 
     if (!batteryElement) {
-      console.error("[TesseractExperience] 找不到电池元素，选择器:", batterySelector);
+      console.error("[TesseractExperience] Battery element not found, selector:", batterySelector);
       setBatteryPosition3D(null);
       return;
     }
@@ -86,12 +86,12 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
       const iconElement = batteryElement.querySelector(iconSelector);
 
       if (!canvasElement) {
-        console.error("[TesseractExperience] Canvas 元素未找到 (glRef)。");
+        console.error("[TesseractExperience] Canvas element not found (glRef).");
         setBatteryPosition3D(null);
         return;
       }
       if (!iconElement) {
-        console.error("[TesseractExperience] 在 powerDisplay 中找不到电池图标元素。");
+        console.error("[TesseractExperience] Battery icon element not found in powerDisplay.");
         setBatteryPosition3D(null);
         return;
       }
@@ -113,7 +113,7 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
         const newPosition = { x: canvasNdcX, y: canvasNdcY, z: 0.1 }; 
         setBatteryPosition3D(newPosition); 
       } else {
-        console.warn('[TesseractExperience] 无效的矩形尺寸，无法计算电池位置。');
+        console.warn('[TesseractExperience] Invalid rect dimensions, cannot calculate battery position.');
         setBatteryPosition3D(null); 
       }
     };
@@ -130,7 +130,7 @@ const TesseractExperience = ({ chargeBattery, isActivated, isInverted }) => {
     if (scrollContainer) {
         scrollContainer.addEventListener('scroll', updatePosition);
     } else {
-        console.warn('[TesseractExperience] 找不到滚动容器，将在 window 上监听滚动。');
+        console.warn('[TesseractExperience] Scroll container not found, listening on window instead.');
         window.addEventListener('scroll', updatePosition);
     }
 

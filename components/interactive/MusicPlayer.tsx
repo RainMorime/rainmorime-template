@@ -94,7 +94,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
       const playPromise = audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-          console.error("播放音频时出错:", error);
+          console.error("Error playing audio:", error);
           setIsPlaying(false); // 确保播放失败时状态同步
         });
       }
@@ -241,7 +241,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
               const playPromise = audioRef.current.play();
               if (playPromise !== undefined) {
                   playPromise.catch(error => {
-                    console.error("[歌曲切换] 自动播放错误:", error);
+                    console.error("[Track switch] Autoplay error:", error);
                     setIsPlaying(false); // 自动播放失败，更新状态
                   });
               }
@@ -278,7 +278,7 @@ const MusicPlayer = ({ powerLevel }: { powerLevel: number }) => {
                 if (playPromise !== undefined) {
                     playPromise.then(() => setIsPlaying(true))
                                .catch(error => {
-                                   console.error("[播放结束] 播放下一首错误:", error);
+                                   console.error("[Playback ended] Error playing next track:", error);
                                    setIsPlaying(false);
                                 });
                 }

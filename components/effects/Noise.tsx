@@ -59,10 +59,10 @@ const Noise = ({
               ctx.fillStyle = pattern;
               ctx.fillRect(0, 0, width, height); // 填充整个 Canvas
           } else {
-              console.error("创建噪点图案失败");
+              console.error("Failed to create noise pattern");
           }
       } else {
-           console.error("图案 Canvas 尺寸为零");
+           console.error("Pattern canvas has zero dimensions");
       }
     };
 

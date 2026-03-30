@@ -12,7 +12,7 @@ const RainMorimeEffect = () => {
     try {
       renderer = new THREE.WebGLRenderer({ alpha: true, powerPreference: 'low-power' });
     } catch {
-      console.warn('RainMorimeEffect: WebGL 上下文创建失败，跳过背景特效');
+      console.warn('RainMorimeEffect: WebGL context creation failed, skipping background effect');
       return;
     }
 
