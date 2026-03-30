@@ -218,6 +218,19 @@ export function TransitionProvider({ children, pageWrapperRef }: TransitionProvi
     navigateToRef.current = navigateTo;
   }, [navigateTo]);
 
+  // Handle browser back/forward navigation (popstate) that bypasses navigateTo
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (url === '/' && !isTransitioning.current) {
+        expandColumns();
+      }
+    };
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events, expandColumns]);
+
   const setBackOverride = useCallback((handler: (() => void) | null) => {
     backOverrideRef.current = handler;
   }, []);
