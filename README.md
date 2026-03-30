@@ -1,17 +1,17 @@
-**English** | [中文](./README.zh-CN.md)
+**中文** | [English](./README.en.md)
 
 # RAINMORIME Template
 
-Your portfolio doesn't have to look like everyone else's.
+你的个人网站不需要看起来像其他所有人的个人网站。
 
-A post-apocalyptic, sci-fi HUD portfolio and blog template. No card grids, no gradient heroes — open it and you'll see scanlines, ECG waveforms, radar sweeps, and an AI carefully choosing its words.
+这是一个后末日科幻 HUD 风格的作品集 + 博客模板。没有卡片瀑布流，没有渐变大标题——打开它的时候，你会看到扫描线、心电图、雷达，和一个正在逐字斟酌措辞的 AI。
 
-> **[Live Demo →](https://rainmorime.com)**
+> **[在线演示 →](https://rainmorime.com)**
 
-<!-- 🖼️ Hero screenshot or GIF needed (15 sec, show hover animations + page transition) -->
-<!-- ![Preview](./docs/preview.gif) -->
+![Preview](./docs/preview.png)
+<!-- 🖼️ 建议替换为 GIF（15 秒以内，展示悬停动画 + 页面切换效果更好） -->
 
-## Getting Started
+## 开始使用
 
 ```bash
 git clone https://github.com/RainMorime/rainmorime-template.git
@@ -21,139 +21,136 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open `http://localhost:3000`. You'll see the loading sequence, then the five-column navigation. Now replace the placeholder content with your own.
+打开 `http://localhost:3000`，你会看到加载动画，然后是五列导航。接下来要做的就是把模板里的占位内容换成你自己的。
 
-## Make It Yours
+## 把它变成你的
 
-### Step 1: Basic Info
+### 第一步：基本信息
 
-These are the things you **must** change — otherwise your site will say "YOUR_SITE" and "your-email@example.com":
+这些是你**必须**改的地方，否则网站上会显示 "YOUR_SITE" 和 "your-email@example.com"：
 
-| What to change | Where | What to put |
-|----------------|-------|-------------|
-| Site name | `components/layout/GlobalHud.tsx` | Search `YOUR_SITE`, replace with your name |
-| Loading title | `components/shared/LoadingScreen/LogoTitle.tsx` | Same as above |
-| Email | `components/sections/ContactSection.tsx` | Search `your-email@example.com` |
-| Email (copy) | `pages/content.tsx` | Search `your-email@example.com` |
-| Copyright | `components/sections/AboutSection.tsx` | Search `Your Name` |
-| Avatar | `public/avatar.svg` | Replace with your own image |
-| Typing tagline | `hooks/useTypingEffect.ts` | Edit `englishText` and `chineseText` |
+| 要改什么 | 在哪里 | 改成什么 |
+|---------|--------|---------|
+| 站名 | `components/layout/GlobalHud.tsx` | 搜索 `YOUR_SITE`，换成你的站名 |
+| 加载标题 | `components/shared/LoadingScreen/LogoTitle.tsx` | 同上 |
+| 邮箱 | `components/sections/ContactSection.tsx` | 搜索 `your-email@example.com` |
+| 邮箱（复制） | `pages/content.tsx` | 搜索 `your-email@example.com` |
+| 版权 | `components/sections/AboutSection.tsx` | 搜索 `Your Name` |
+| 头像 | `public/avatar.svg` | 替换为你的头像图片 |
+| 打字签名 | `hooks/useTypingEffect.ts` | 修改 `englishText` 和 `chineseText` |
 
-### Step 2: Fill In Content
+### 第二步：填充内容
 
-The `data/` directory holds all your content as plain TypeScript arrays — just follow the examples:
+`data/` 目录是你所有内容的数据源，格式是普通的 TypeScript 数组，照着示例改就行：
 
-| File | Content |
-|------|---------|
-| `data/projects.ts` | Your projects and portfolio items |
-| `data/experience.ts` | Education and work timeline |
-| `data/life.ts` | Games, travel, hobbies |
-| `data/skills.ts` | Skill tree |
-| `data/friendLinks.ts` | Friend links |
+| 文件 | 内容 |
+|------|------|
+| `data/projects.ts` | 你的项目和作品 |
+| `data/experience.ts` | 教育和工作经历 |
+| `data/life.ts` | 游戏、旅行、日常 |
+| `data/skills.ts` | 技能树 |
+| `data/friendLinks.ts` | 友情链接 |
 
-### Step 3: Write Blog Posts
+### 第三步：写博客
 
-Create `.mdx` files in `content/blog/`:
+在 `content/blog/` 里创建 `.mdx` 文件：
 
 ```markdown
 ---
-title: "My First Post"
+title: "文章标题"
 date: "2025-01-01"
-excerpt: "A short description."
-tags: ["hello", "world"]
+excerpt: "一段简短描述"
+tags: ["标签1", "标签2"]
 ---
 
-Write in Markdown. Supports syntax highlighting, images, and custom components.
+正文用 Markdown 写。支持代码高亮、图片、自定义组件。
 ```
 
-### Step 4: Optional Configuration
+### 第四步：其他可选配置
 
 <details>
-<summary><b>Music Player</b></summary>
+<summary><b>音乐播放器</b></summary>
 
-Edit the `playlist` array at the top of `components/interactive/MusicPlayer.tsx`. Place audio files in `public/music/`. Supports `.mp3` and external URLs.
+编辑 `components/interactive/MusicPlayer.tsx` 顶部的 `playlist` 数组，把音频文件放到 `public/music/`。支持 `.mp3` 和外链。
 
 </details>
 
 <details>
-<summary><b>Colors</b></summary>
+<summary><b>配色</b></summary>
 
-The primary color is `--ark-highlight-green: #b2f2bb` in `styles/globals.scss`. Change this one variable to re-theme the entire site.
+主色调是 `styles/globals.scss` 里的 `--ark-highlight-green: #b2f2bb`。改这一个变量就能改全站的绿。
 
-The inverted (power-off) palette uses `--ark-inverted-*` variables in the same file.
+负色（拉杆切换的粉色模式）用的是 `--ark-inverted-*` 系列变量，在同一个文件里。
 
 </details>
 
 <details>
-<summary><b>Environment Variables</b></summary>
+<summary><b>环境变量</b></summary>
 
 ```env
-PORT=3000                                    # Server port, default 3000
-NEXT_PUBLIC_SITE_URL=https://your-domain.com # For sitemap and RSS
+PORT=3000                              # 服务端口，默认 3000
+NEXT_PUBLIC_SITE_URL=https://你的域名   # 用于 sitemap 和 RSS
 ```
 
 </details>
 
 <details>
-<summary><b>Deployment</b></summary>
+<summary><b>部署</b></summary>
 
 ```bash
 npm run build
-npm start            # or with PM2:
+npm start          # 或用 PM2：
 pm2 start server.js --name my-site
 ```
 
-Includes built-in SSE real-time stats (visitor count + online users + uptime) with no external database. Stats persist in `.stats.json` at the project root.
+自带 SSE 实时统计（访客数 + 在线人数 + 运行时长），不需要额外数据库。统计数据持久化在项目根目录的 `.stats.json` 文件中。
 
 </details>
 
-## Features
+## 功能一览
 
-- 42 handcrafted CSS animations (scanlines / ECG / radar / focus frame / task list...)
-- Power system: lever-toggle inverted color mode
-- AI-style typing effect
-- Five-column navigation with unique hover animations per column
-- WebGL rain particle background (lazy-loaded, won't block first paint)
-- MDX blog + RSS + auto reading time
-- SSE real-time visitor stats
-- Vinyl record music player
-- Fully responsive on mobile
+- 42 个手写 CSS 动画（扫描线 / 心电图 / 雷达 / 聚焦框 / 任务列表...）
+- 电源系统：拉杆切换全站负色模式
+- AI 风格的打字机效果
+- 五列导航，每列有独立的悬停动画
+- WebGL 雨粒子背景（延迟加载，不影响首屏）
+- MDX 博客 + RSS + 自动阅读时长
+- SSE 实时访客统计
+- 黑胶唱片音乐播放器
+- 移动端完整适配
 
-<!-- 🖼️ Feature screenshots can go here in a table layout -->
-<!-- | Hover animations | Inverted mode | Mobile |
-|-----------------|--------------|--------|
+<!-- 🖼️ 功能截图（悬停动画 / 负色模式 / 移动端 各一张） -->
+<!-- | 悬停动画 | 负色模式 | 移动端 |
+|---------|---------|--------|
 | ![hover](./docs/hover.gif) | ![inverted](./docs/inverted.png) | ![mobile](./docs/mobile.png) | -->
 
-## Tech Stack
+## 技术栈
 
 Next.js 14 · TypeScript · SCSS Modules · CSS @keyframes · Framer Motion · GSAP · Three.js · MDX · Node.js SSE
 
-## Project Structure
+## 项目结构
 
 ```
-├── pages/              # Page routes
+├── pages/              # 页面路由
 ├── components/
-│   ├── layout/         # Layout (nav, HUD, left panel)
-│   ├── sections/       # Content (Works / Experience / Life / Contact / About)
-│   ├── detail/         # Detail views
-│   ├── effects/        # Visual effects (WebGL, noise, 3D)
-│   ├── interactive/    # Interactive (music player, lightbox, lever)
-│   └── shared/         # Reusable components
-├── hooks/              # Custom hooks
-├── contexts/           # Global state
-├── data/               # ← Your content here
-├── content/blog/       # ← Your blog posts here
-├── styles/             # SCSS stylesheets
-└── server.js           # Custom server (SSE stats)
+│   ├── layout/         # 布局（导航、HUD、左面板）
+│   ├── sections/       # 内容区（Works / Experience / Life / Contact / About）
+│   ├── detail/         # 详情视图
+│   ├── effects/        # 视觉效果（WebGL、噪点、3D）
+│   ├── interactive/    # 交互组件（音乐播放器、灯箱、拉杆）
+│   └── shared/         # 通用组件
+├── hooks/              # 自定义 Hooks
+├── contexts/           # 全局状态
+├── data/               # ← 你的内容在这里
+├── content/blog/       # ← 你的博客在这里
+├── styles/             # SCSS 样式
+└── server.js           # 自定义服务器（SSE 统计）
 ```
 
-## License
+## 许可证
 
-[MIT](./LICENSE) — Free to use, just keep the attribution.
+[MIT](./LICENSE) — 免费使用，保留署名即可。
 
 ---
 
-Design & development by [RainMorime](https://github.com/RainMorime).
-
-<!-- 🖼️ Optional full-width site screenshot as a footer -->
-<!-- ![Footer](./docs/footer-screenshot.png) -->
+设计与开发：[RainMorime](https://github.com/RainMorime)
