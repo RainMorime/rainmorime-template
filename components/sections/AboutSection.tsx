@@ -19,15 +19,7 @@ export default function AboutSection({
           <p>Online Now: {currentVisitors}</p>
         </div>
         <div className={styles.footerInfo}>
-          {/* Replace with your own license/registration info, or remove */}
-          <a
-            href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.licenseLink}
-          >
-            CC BY-NC-SA 4.0
-          </a> 2025-PRESENT © Your Name
+          MIT 2025-PRESENT © Your Name
         </div>
       
       </div>

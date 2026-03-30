@@ -144,11 +144,7 @@ The green highlight color (`--ark-highlight-green`) serves double duty as both t
 
 ## License
 
-This project is licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
-
-- **Attribution** — Credit the original project
-- **NonCommercial** — No commercial use
-- **ShareAlike** — Derivatives must use the same license
+[MIT](./LICENSE)
 
 ## Acknowledgments
 

@@ -139,11 +139,7 @@ pm2 start server.js --name my-portfolio
 
 ## 许可证
 
-本项目采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 许可证。
-
-- **署名** — 请注明原始项目
-- **非商业** — 禁止商业用途
-- **相同方式共享** — 衍生作品须使用相同许可证
+[MIT](./LICENSE)
 
 ## 致谢
 
