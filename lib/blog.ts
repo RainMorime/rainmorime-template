@@ -22,7 +22,7 @@ export function getPostBySlug(slug: string) {
 
   const meta: BlogPostMeta = {
     slug,
-    title: data.title || '无标题',
+    title: data.title || 'Untitled',
     date: data.date || '',
     excerpt: data.excerpt || '',
     tags: data.tags || [],

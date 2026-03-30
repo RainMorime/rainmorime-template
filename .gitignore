@@ -52,3 +52,6 @@ public/music/*.mp3
 # Deploy
 deploy.log
 .deploy.lock
+
+# Nested repo artifacts
+rainmorime-template/

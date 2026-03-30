@@ -11,7 +11,7 @@ export function useFateTypingEffect(textVisible: boolean): FateTypingState {
   useEffect(() => {
     if (textVisible) {
       const englishText = "Replace This With Your Own Tagline";
-      const chineseText = "在这里写你自己的签名";
+      const chineseText = "Write Your Own Tagline Here";
       const typingDelay = 80;
       const deleteDelay = 50;
       const chineseTypingDelay = 150;

@@ -274,7 +274,7 @@ const WorkDetailView = ({ item }) => { // Removed onBack prop
       {/* --- Add Related Images Section --- */}
       {imagesForGallery.length > 0 && (
         <div className={styles.relatedImagesSection}>
-          <h4 className={styles.relatedImagesTitle}>相关图片</h4>
+          <h4 className={styles.relatedImagesTitle}>Gallery</h4>
           <div className={styles.thumbnailGrid}>
             {imagesForGallery.map((img, index) => (
               <button 

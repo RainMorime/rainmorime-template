@@ -8,7 +8,7 @@ export default function FriendsPage() {
     <>
       <Head>
         <title>FRIENDS</title>
-        <meta name="description" content="友链 — 同行者的信号" />
+        <meta name="description" content="Friends — Signal from fellow travelers" />
       </Head>
       <SectionPageLayout>
         <div className={styles.friendLinkSection}>

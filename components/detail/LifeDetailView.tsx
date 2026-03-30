@@ -243,7 +243,7 @@ const LifeDetailView = ({ item }) => {
               {/* 相关图片缩略图展示区域 */}
               {imagesForGallery.length > 0 && (
                 <div className={styles.relatedImagesSection}>
-                  <h4 className={styles.relatedImagesTitle}>图片</h4>
+                  <h4 className={styles.relatedImagesTitle}>Gallery</h4>
                   <div className={styles.thumbnailGrid}>
                     {imagesForGallery.map((img, idx) => ( // Changed index to idx to avoid conflict
                       <button 
