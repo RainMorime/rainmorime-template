@@ -5,8 +5,6 @@ const { parse } = require('url');
 const next = require('next');
 const fs = require('fs');
 const path = require('path');
-const crypto = require('crypto');
-const { exec, spawn } = require('child_process');
 
 const http = require('http');
 
@@ -119,54 +117,6 @@ async function main() {
         runtime: currentRuntime,
         visits: stats.totalVisits,
       }));
-      return;
-    }
-
-    if (parsedUrl.pathname === '/api/webhook/deploy' && req.method === 'POST') {
-      const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-      if (!WEBHOOK_SECRET) {
-        console.error('[DEPLOY] WEBHOOK_SECRET not set in .env.local');
-        res.writeHead(500);
-        res.end('Server misconfigured');
-        return;
-      }
-
-      let body = '';
-      req.on('data', chunk => { body += chunk; });
-      req.on('end', () => {
-        const signature = req.headers['x-hub-signature-256'];
-        const expected = 'sha256=' + crypto.createHmac('sha256', WEBHOOK_SECRET).update(body).digest('hex');
-
-        if (!signature || signature !== expected) {
-          console.warn('[DEPLOY] Invalid signature, rejected.');
-          res.writeHead(403);
-          res.end('Forbidden');
-          return;
-        }
-
-        let payload;
-        try { payload = JSON.parse(body); } catch { payload = {}; }
-        const ref = payload.ref || '';
-        if (ref !== 'refs/heads/main' && ref !== 'refs/heads/master') {
-          res.writeHead(200);
-          res.end('Ignored: not main/master branch');
-          return;
-        }
-
-        console.log('[DEPLOY] Webhook received, starting deploy...');
-        res.writeHead(200);
-        res.end('Deploy started');
-
-        const deployScript = path.join(__dirname, 'deploy.sh');
-        const child = spawn('bash', [deployScript], {
-          cwd: __dirname,
-          detached: true,
-          stdio: 'ignore',
-        });
-        child.unref();
-        console.log(`[DEPLOY] Spawned deploy process (pid: ${child.pid})`);
-
-      });
       return;
     }
 

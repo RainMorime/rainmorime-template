@@ -20,7 +20,6 @@
 - **MDX 博客** — Markdown 写作，自动生成阅读时长、标签和 RSS 订阅
 - **SSE 实时统计** — 实时访客数和运行时间，零外部依赖（无 Socket.IO）
 - **音乐播放器** — 黑胶唱片 UI，拖拽切歌交互
-- **自动部署** — GitHub Webhook 集成，零停机构建切换
 - **完全响应式** — 移动端适配动画与触摸交互
 
 ## 技术栈
@@ -34,7 +33,7 @@
 | 3D | Three.js + React Three Fiber（延迟加载）|
 | 博客 | MDX via next-mdx-remote |
 | 服务器 | 自定义 Node.js 服务器 + SSE |
-| 部署 | PM2 + GitHub Webhooks |
+| 部署 | PM2 |
 
 ## 快速开始
 
@@ -89,7 +88,7 @@ tags: ["hello", "world"]
 
 ### 5. 图片
 
-模板使用 [placehold.co](https://placehold.co) 的占位图片。将数据文件中的图片 URL 替换为你自己托管的图片。如果使用带图片处理的 CDN（如 Cloudinary 或腾讯云 COS），可以自定义 `components/shared/LazyImage.tsx` 中的 `getProcessedImageUrl` 函数。
+模板使用 [placehold.co](https://placehold.co) 的占位图片。将数据文件中的图片 URL 替换为你自己托管的图片。
 
 ### 6. 配色
 
@@ -112,8 +111,7 @@ tags: ["hello", "world"]
 ├── content/blog/       # MDX 博客文章
 ├── styles/             # SCSS 模块和分片
 ├── lib/                # 博客工具函数
-├── server.js           # 自定义服务器（SSE 统计 + 部署 Webhook）
-└── deploy.sh           # 自动部署脚本
+└── server.js           # 自定义服务器（SSE 统计）
 ```
 
 ## 部署
@@ -136,14 +134,8 @@ pm2 start server.js --name my-portfolio
 | 变量 | 必需 | 说明 |
 |------|------|------|
 | `PORT` | 否 | 服务端口（默认 3000）|
-| `WEBHOOK_SECRET` | 否 | GitHub Webhook 密钥（用于自动部署）|
 | `NEXT_PUBLIC_SITE_URL` | 否 | 你的站点 URL（用于 sitemap/RSS）|
 
-## 设计理念
-
-这个模板源于一个叙事概念：在一个后末日世界中，AI 助手（即网站本身）作为访客感知世界的界面。从 HUD 覆盖层到电源系统切换，每一个设计决策都映射着这个世界观。
-
-绿色高亮色（`--ark-highlight-green`）既是界面强调色，也是叙事元素。你可以保留这层叙事、将它改编为你自己的故事，或完全移除，只使用纯视觉框架。
 
 ## 许可证
 

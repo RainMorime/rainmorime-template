@@ -20,7 +20,6 @@ A post-apocalyptic, sci-fi HUD-themed portfolio and blog template built with **N
 - **MDX Blog** — Write posts in Markdown, auto-generated reading time, tags, and RSS feed
 - **SSE Real-Time Stats** — Live visitor count and uptime, zero external dependencies
 - **Music Player** — Vinyl record UI with drag-to-switch interaction
-- **Auto-Deploy** — GitHub webhook integration with zero-downtime build swapping
 - **Fully Responsive** — Works on mobile with adapted animations and touch interactions
 
 ## Tech Stack
@@ -34,7 +33,7 @@ A post-apocalyptic, sci-fi HUD-themed portfolio and blog template built with **N
 | 3D | Three.js + React Three Fiber (lazy-loaded) |
 | Blog | MDX via next-mdx-remote |
 | Server | Custom Node.js server with SSE |
-| Deployment | PM2 + GitHub Webhooks |
+| Deployment | PM2 |
 
 ## Quick Start
 
@@ -112,8 +111,7 @@ The primary color is controlled by `--ark-highlight-green` in `styles/globals.sc
 ├── content/blog/       # MDX blog posts
 ├── styles/             # SCSS modules and partials
 ├── lib/                # Blog utilities
-├── server.js           # Custom server (SSE stats + deploy webhook)
-└── deploy.sh           # Auto-deploy script
+└── server.js           # Custom server (SSE stats)
 ```
 
 ## Deployment
@@ -136,7 +134,6 @@ pm2 start server.js --name my-portfolio
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `PORT` | No | Server port (default: 3000) |
-| `WEBHOOK_SECRET` | No | GitHub webhook secret for auto-deploy |
 | `NEXT_PUBLIC_SITE_URL` | No | Your site URL for sitemap/RSS |
 
 ## Design Philosophy
