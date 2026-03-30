@@ -36,7 +36,7 @@ export default function Home() {
         <meta name="description" content="Personal portfolio and blog" />
         <meta property="og:title" content="My Portfolio" />
         <meta property="og:description" content="Personal portfolio and blog" />
-        <meta property="og:url" content="https://example.com" />
+        <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'} />
       </Head>
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
         <NavigationColumns

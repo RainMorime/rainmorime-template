@@ -207,7 +207,7 @@ function BlogDetailContent({ meta, mdxSource, allPosts }: BlogPostPageProps) {
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.excerpt} />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`https://example.com/blog/${meta.slug}`} />
+        <meta property="og:url" content={`${process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'}/blog/${meta.slug}`} />
         <meta property="article:published_time" content={meta.date} />
         {meta.tags.map((tag) => (
           <meta key={tag} property="article:tag" content={tag} />
