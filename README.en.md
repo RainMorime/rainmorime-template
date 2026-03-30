@@ -2,14 +2,11 @@
 
 # RAINMORIME Template
 
-Your portfolio doesn't have to look like everyone else's.
-
-A post-apocalyptic, sci-fi HUD portfolio and blog template. No card grids, no gradient heroes — open it and you'll see scanlines, ECG waveforms, radar sweeps, and an AI carefully choosing its words.
+A post-apocalyptic, sci-fi HUD portfolio + blog template.
 
 > **[Live Demo →](https://rainmorime.com)**
 
 ![Preview](./docs/preview.png)
-<!-- 🖼️ Consider replacing with a GIF (15 sec, showing hover animations + page transitions) -->
 
 ## Getting Started
 
@@ -106,23 +103,6 @@ pm2 start server.js --name my-site
 Includes built-in SSE real-time stats (visitor count + online users + uptime) with no external database. Stats persist in `.stats.json` at the project root.
 
 </details>
-
-## Features
-
-- 42 handcrafted CSS animations (scanlines / ECG / radar / focus frame / task list...)
-- Power system: lever-toggle inverted color mode
-- AI-style typing effect
-- Five-column navigation with unique hover animations per column
-- WebGL rain particle background (lazy-loaded, won't block first paint)
-- MDX blog + RSS + auto reading time
-- SSE real-time visitor stats
-- Vinyl record music player
-- Fully responsive on mobile
-
-<!-- 🖼️ Feature screenshots (hover animation / inverted mode / mobile, one each) -->
-<!-- | Hover animations | Inverted mode | Mobile |
-|-----------------|--------------|--------|
-| ![hover](./docs/hover.gif) | ![inverted](./docs/inverted.png) | ![mobile](./docs/mobile.png) | -->
 
 ## Tech Stack
 
